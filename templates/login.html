@@ -18,6 +18,18 @@
     <h1 class="form-heading">login Form</h1>
     <div class="login-form">
         <div class="main-div">
+            {% with messages = get_flashed_messages()  %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
             <div class="panel">
                 <h2>Login</h2>
                 <p>Please enter your email and password</p>
@@ -39,7 +51,8 @@
                 <div class="forgot">
                     <a href="reset.html">Forgot password?</a>
                 </div>
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" class="btn btn-primary mb-1">Login</button>
+                <button type="submit" class="btn btn-primary">Sign in</button>
 
             </form>
         </div>

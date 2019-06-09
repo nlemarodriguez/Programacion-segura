@@ -17,7 +17,7 @@ class Database:
         return result
 
     def login(self, email, password):
-        self.cur.execute('SELECT id from usuario where correo = %s and password = %s', (email, password))
+        self.cur.execute('SELECT * from usuario where correo = %s and password = %s', (email, password))
         result = self.cur.fetchall()
         return result
 
