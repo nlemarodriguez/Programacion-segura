@@ -11,13 +11,19 @@ class Database:
                                    DictCursor)
         self.cur = self.con.cursor()
         
-    def list_users(self):
-        self.cur.execute("SELECT * FROM usuario LIMIT 50")
+    def infouser_by_id(self, id):
+        self.cur.execute('SELECT * from usuario where id = %s', id)
         result = self.cur.fetchall()
         return result
 
     def login(self, email, password):
-        self.cur.execute('SELECT * from usuario where correo = %s and password = %s', (email, password))
+        self.cur.execute('SELECT id from usuario where correo = %s and password = %s', (email, password))
+        result = self.cur.fetchall()
+        return result
+
+    def wallposts_by_user(self, id):
+        self.cur.execute('SELECT c.id, c.texto, c.fecha, uu.nombres, uu.apellidos, uu.foto  from usuario u, usuario uu, comentario c where c.idusuario_comenta = u.id and '
+                         'c.idusuario_postea = uu.id and u.id = %s order by c.fecha desc', id)
         result = self.cur.fetchall()
         return result
 
