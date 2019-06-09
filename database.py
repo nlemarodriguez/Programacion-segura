@@ -15,3 +15,10 @@ class Database:
         self.cur.execute("SELECT * FROM usuario LIMIT 50")
         result = self.cur.fetchall()
         return result
+
+    def login(self, email, password):
+        self.cur.execute('SELECT id from usuario where correo = %s and password = %s', (email, password))
+        result = self.cur.fetchall()
+        return result
+
+

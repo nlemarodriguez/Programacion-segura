@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, url_for, jsonify
 from flask_bootstrap import Bootstrap
 from database import Database
 
@@ -10,11 +10,22 @@ def create_app():
 
 
 app = create_app()
+db = Database()
 
 
 @app.route('/')
-def login():
+def index():
     return render_template('login.html')
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        iduser = db.login(email, password)
+        print(iduser)
+        return jsonify(iduser)
 
 
 @app.route('/profile')
