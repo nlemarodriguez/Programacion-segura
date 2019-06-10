@@ -1,10 +1,16 @@
+import os
 from flask import Flask, render_template, request, url_for, jsonify, flash, redirect, json, session
 from flask_bootstrap import Bootstrap
 from database import Database
 
+#UPLOAD_FOLDER = '/static/imagen_perfil'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_FOLDER = os.path.join(APP_ROOT, 'static', 'imagen_perfil')
 
 def create_app():
     app = Flask(__name__)
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     Bootstrap(app)
     return app
 
@@ -72,6 +78,48 @@ def users():
     res = db_query()
     return str(res)
     #return render_template('employees.html', result=res, content_type='application/json')
+
+
+@app.route('/registro')
+def registro():
+    return render_template('registro.html')
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@app.route('/registrar_usuario', methods=['POST'])
+def reister():
+    if request.method == 'POST':
+        #if 'file' not in request.files:
+        # latestfile = request.files['customlogo']
+        #         # full_filename = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
+        #         # latestfile.save(full_filename)
+
+
+        file = request.files['files[]']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file and allowed_file(file.filename):
+            filename = file.filename
+            flash('file {} saved'.format(file.filename))
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+            #file.save(app.config['UPLOAD_FOLDER'] + "/" + filename)
+
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        email = request.form['email']
+        password = request.form['password']
+        gender = request.form['gender']
+        photo = '/static/imagen_perfil' + '/' + file.filename
+        existeCorreo = db.verificar_correo(email)
+        if existeCorreo:
+            return str("Usuario ya existe")
+        else:
+            db.registrar_post(first_name, last_name, email, password, gender, photo)
+            return str('usuario registrado')
 
 
 if __name__ == '__main__':
