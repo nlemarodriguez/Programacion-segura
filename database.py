@@ -27,4 +27,7 @@ class Database:
         result = self.cur.fetchall()
         return result
 
+    def insert_post(self, texto, idusuario_postea, idusuario_comenta):
+        self.cur.execute("INSERT INTO comentario (texto, idusuario_postea, idusuario_comenta) VALUES (%s,%s,%s)", (texto, idusuario_postea, idusuario_comenta))
+        self.con.commit()
 

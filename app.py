@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, jsonify, flash, redirect, json
+from flask import Flask, render_template, request, url_for, jsonify, flash, redirect, json, session
 from flask_bootstrap import Bootstrap
 from database import Database
 
@@ -26,6 +26,7 @@ def login():
         password = request.form['password']
         userid = db.login(email, password)
         if userid:
+            session['user_logged'] = userid
             return redirect(url_for('profile', user=userid[0]['id']))
         else:
             flash('El usuario no existe')
@@ -41,6 +42,19 @@ def profile():
     print(comentarios_del_usuario)
     print(user)
     return render_template('profile.html', user=user[0], comentarios=comentarios_del_usuario)
+
+
+@app.route('/post_commet/<id>')
+def post_comment(id):
+    print('entro 1')
+    if request.method == 'POST':
+        texto = request.form['texto_publicacion']
+        idusuario_postea = session.get('user_logged')
+        idusuario_comenta = id
+
+        db.insert_post(texto, idusuario_postea, idusuario_comenta)
+        print('bd')
+        return redirect(url_for('profile', user=idusuario_comenta))
 
 
 @app.route('/users')
