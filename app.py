@@ -41,16 +41,16 @@ def profile():
     user = db.infouser_by_id(iduser)
     return render_template('profile.html', user=user[0], comentarios=comentarios_del_usuario)
 
-#Example: http://127.0.0.1:3000/search?user=1&friend=Maria
+#Example: http://127.0.0.1:3000/search?friend=Maria
 @app.route('/search')
 def search():
-    idUser = request.args['user']
+    idUser = session.get('user_logged')
     friend = request.args['friend']
     print("User: "+str(idUser))
     print("Friend: "+str(friend))
     friends = db.search_friends(idUser, friend)
     print(friends)
-    return render_template('search.html', friends = friends)
+    return render_template('search.html', friends=friends)
 
 
 @app.route('/post_comment/<id>', methods=['POST'])

@@ -2,7 +2,7 @@ from enums import Sexo
 
 class Amigo(object):
 
-  def __init__(self, id, nombres, apellidos, sexo, fechaNacimiento, sonAmigos):
+  def __init__(self, id, nombres, apellidos, sexo, fechaNacimiento, sonAmigos, foto):
     self.id = id
     self.nombresCompletos = nombres + " " + apellidos
     self.nombres = nombres
@@ -10,3 +10,4 @@ class Amigo(object):
     self.sexo = Sexo.from_code(sexo).value
     self.fechaNacimiento = fechaNacimiento
     self.sonAmigos = sonAmigos
+    self.foto = foto;

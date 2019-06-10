@@ -35,14 +35,14 @@ class Database:
 
     def search_friends(self, idUser, friend):
         self.cur.execute('SELECT u.id, u.nombres, u.apellidos, u.sexo, u.fechaNacimiento, '
-                         '  (select count(*) > 0 from invitacion i where i.idusuario_invita = %s and i.idusuario_invitado = u.id and i.estado = ' + str(EstadoInvitacion.ACEPTADO.value) +') as sonAmigos '
-                         '  from usuario u '
+                         '  (select count(*) > 0 from invitacion i where i.idusuario_invita = %s and i.idusuario_invitado = u.id and i.estado = ' + str(EstadoInvitacion.ACEPTADO.value) +') as sonAmigos, '
+                         '  u.foto '                                                                                                                                                                      'from usuario u '
                          '  where u.nombres LIKE %s or '
                          '      u.apellidos LIKE %s order by u.nombres desc', (idUser, friend, friend))
         result = self.cur.fetchall()
         friendList = []
         for row in result:
-            friend = Amigo(row['id'], row['nombres'], row['apellidos'], row['sexo'], row['fechaNacimiento'], row['sonAmigos'])
+            friend = Amigo(row['id'], row['nombres'], row['apellidos'], row['sexo'], row['fechaNacimiento'], row['sonAmigos'], row['foto'])
             friendList.append(friend)
         return friendList
 

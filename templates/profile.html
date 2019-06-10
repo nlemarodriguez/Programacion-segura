@@ -5,22 +5,7 @@
 
     <div class="row">
         <div class="col-md-3">
-             <h1 class="h3 mb-2">Profile</h1>
-        </div>
-        <div class="col-md-4 mb-2 text-left">
-            <div class="input-group input-group-sm align-l">
-                <input type="text" class="form-control align-l" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-                <button type="button" class="btn btn-primary btn-sm ml-3">Search</button>
-            </div>
-
-        </div>
-        <div class="col-md-1 mb-2">
-             <button type="button" class="btn btn-primary btn-sm">
-                 <span class="badge badge-light">4</span>
-            </button>
-        </div>
-        <div class="col-md-2 ">
-             <h1 class="h4 mb-2">My profile</h1>
+             <h1 class="h3 mb-2">Perfil</h1>
         </div>
     </div>
 
@@ -28,12 +13,12 @@
         <div class="col-md-3 ">
             <div class="card mb-3">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Profile Details</h5>
+                    <h5 class="card-title mb-0">Detalles Perfil</h5>
                 </div>
                 <div class="card-body text-center">
                     <img src="{{ user.foto }}" class="img-fluid rounded-circle mb-2" width="128" height="128">
                     <h4 class="card-title mb-0">{{ user.nombres }} {{ user.apellidos }}</h4>
-                    <div class="text-muted mb-2">Usuario de la red social</div>
+                    <div class="text-muted mb-2">Usuario de la Red Social</div>
                 </div>
             </div>
         </div>
@@ -41,23 +26,23 @@
         <div class="col-md-8 ">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">New Post</h5>
+                    <h5 class="card-title mb-0">Nueva Publicación</h5>
                 </div>
                 <div class="card-body h-100">
                     <form action="/post_comment/{{ user.id }}" method="POST">
                     <div class="form-group">
-                        <textarea name="texto_publicacion" class="form-control rounded-1" placeholder="Write something" id="exampleFormControlTextarea1" rows="2"></textarea>
+                        <textarea name="texto_publicacion" class="form-control rounded-1" placeholder="Escribe un comentario ..." id="exampleFormControlTextarea1" rows="2"></textarea>
                     </div>
 
                     <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary btn-sm ">Publish</button>
+                        <button type="submit" class="btn btn-primary btn-sm ">Publicar</button>
                     </div>
                     </form>
                 </div>
             </div>
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Activities</h5>
+                    <h5 class="card-title mb-0">Actividades</h5>
                 </div>
                 <div class="card-body h-100">
 
