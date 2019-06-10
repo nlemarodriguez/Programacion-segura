@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, jsonify, flash, redirect, json
+from flask import Flask, render_template, request, url_for, jsonify, flash, redirect, json, session
 from flask_bootstrap import Bootstrap
 from database import Database
 
@@ -26,6 +26,7 @@ def login():
         password = request.form['password']
         userid = db.login(email, password)
         if userid:
+            session['user_logged'] = userid[0]['id']
             return redirect(url_for('profile', user=userid[0]['id']))
         else:
             flash('El usuario no existe')
@@ -35,11 +36,9 @@ def login():
 @app.route('/profile')
 def profile():
     iduser = request.args['user']
-    print(iduser)
     comentarios_del_usuario = db.wallposts_by_user(iduser)
-    user = db.infouser_by_id(iduser)
     print(comentarios_del_usuario)
-    print(user)
+    user = db.infouser_by_id(iduser)
     return render_template('profile.html', user=user[0], comentarios=comentarios_del_usuario)
 
 #Example: http://127.0.0.1:3000/search?user=1&friend=Maria
@@ -52,6 +51,16 @@ def search():
     friends = db.search_friends(idUser, friend)
     print(friends)
     return render_template('search.html', friends = friends)
+
+
+@app.route('/post_comment/<id>', methods=['POST'])
+def post_comment(id):
+    if request.method == 'POST':
+        texto = request.form['texto_publicacion']
+        idusuario_postea = session.get('user_logged')
+        idusuario_comenta = id
+        db.insert_post(texto, idusuario_postea, idusuario_comenta)
+        return redirect(url_for('profile', user=idusuario_comenta))
 
 
 @app.route('/users')

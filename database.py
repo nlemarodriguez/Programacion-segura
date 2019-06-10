@@ -24,13 +24,15 @@ class Database:
         return result
 
     def wallposts_by_user(self, id):
-        self.cur.execute(
-            'SELECT c.id, c.texto, c.fecha, uu.nombres, uu.apellidos, uu.foto  from usuario u, usuario uu, comentario c where c.idusuario_comenta = u.id and '
-            'c.idusuario_postea = uu.id and u.id = %s order by c.fecha desc', id)
+        self.cur.execute('SELECT c.id, c.texto, c.fecha, u_postea.nombres, u_postea.apellidos, u_postea.foto, u_postea.id u_postea  from usuario u, usuario u_postea, comentario c where c.idusuario_comenta = u.id and '
+                         'c.idusuario_postea = u_postea.id and u.id = %s order by c.fecha desc', id)
         result = self.cur.fetchall()
         return result
 
-#, (select count(*) from invitacion i where i.idusuario_invita = %s and i.idusuario_invitado = u.id ) as friends
+    def insert_post(self, texto, idusuario_postea, idusuario_comenta):
+        self.cur.execute("INSERT INTO comentario (texto, idusuario_postea, idusuario_comenta) VALUES (%s,%s,%s)", (texto, idusuario_postea, idusuario_comenta))
+        self.con.commit()
+
     def search_friends(self, idUser, friend):
         self.cur.execute('SELECT u.id, u.nombres, u.apellidos, u.sexo, u.fechaNacimiento, '
                          '  (select count(*) > 0 from invitacion i where i.idusuario_invita = %s and i.idusuario_invitado = u.id and i.estado = ' + str(EstadoInvitacion.ACEPTADO.value) +') as sonAmigos '
@@ -43,5 +45,4 @@ class Database:
             friend = Amigo(row['id'], row['nombres'], row['apellidos'], row['sexo'], row['fechaNacimiento'], row['sonAmigos'])
             friendList.append(friend)
         return friendList
-
 
