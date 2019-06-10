@@ -1,5 +1,4 @@
 body{
-    margin-top:20px;
     background:#F0F8FF;
 }
 .card {
@@ -83,4 +82,16 @@ img.profile-photo-lg{
 
 .fiend-name{
     color: #007bff;
+}
+
+.navBarRedSocial {
+    background-color: #c6d8ea !important;
+    border-bottom: 1px dashed black;
+}
+
+.foto_perfil_busqueda {
+    max-width: 100%;
+    height: auto;
+    margin: 8px;
+    border: 2px solid black;
 }
