@@ -37,6 +37,7 @@ def login():
 def profile():
     iduser = request.args['user']
     comentarios_del_usuario = db.wallposts_by_user(iduser)
+    print(comentarios_del_usuario)
     user = db.infouser_by_id(iduser)
     return render_template('profile.html', user=user[0], comentarios=comentarios_del_usuario)
 

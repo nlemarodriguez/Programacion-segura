@@ -65,16 +65,27 @@
 
                         <div class="media">
                             <img src="{{ c.foto }}" width="36" height="36" class="rounded-circle mr-2">
-                            <div class="media-body">
-                                <small class="float-right text-navy">30m ago</small>
-                                <strong>{{ c.nombres }} {{ c.apellidos }}</strong> posted something on <strong>{{ user.nombres }} {{ user.apellidos }}</strong>'s timeline
-                             <br>
-                             <small class="text-muted">{{ c.fecha }}</small>
-                                <div class="border text-sm text-muted p-2 mt-1">
-                                {{ c.texto }}
+                            {% if c.u_postea == user.id %}
+                                <div class="media-body">
+                                    <small class="float-right text-navy">5m ago</small>
+                                    <strong>{{ c.nombres }} {{ c.apellidos }}</strong>  {{ c.texto }}
+                                    <br>
+                                    <small class="text-muted">Today 7:51 pm</small>
+                                    <br>
                                 </div>
+                            {% else %}
+                                <div class="media-body">
+                                    <small class="float-right text-navy">30m ago</small>
+                                    <strong>{{ c.nombres }} {{ c.apellidos }}</strong> posted something on <strong>{{ user.nombres }} {{ user.apellidos }}</strong>'s timeline
+                                    <br>
+                                    <small class="text-muted">{{ c.fecha }}</small>
+                                    <div class="border text-sm text-muted p-2 mt-1">
+                                        {{ c.texto }}
+                                    </div>
 
-                            </div>
+                                </div>
+                            {% endif %}
+
                         </div>
                         <hr>
 
