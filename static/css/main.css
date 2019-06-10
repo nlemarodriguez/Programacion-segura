@@ -91,7 +91,16 @@ img.profile-photo-lg{
 
 .foto_perfil_busqueda {
     max-width: 100%;
-    height: auto;
     margin: 8px;
+    border: 2px solid black;
+    object-fit: cover;
+    width: 200px;
+    height: 100px;
+}
+
+.foto_perfil  {
+    object-fit: cover;
+    width: 200px;
+    height: 200px;
     border: 2px solid black;
 }
