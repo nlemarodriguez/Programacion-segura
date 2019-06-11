@@ -40,9 +40,9 @@ class Database:
                          '  (select count(*) > 0 from invitacion i where i.idusuario_invita = %s and i.idusuario_invitado = u.id and i.estado = ' + str(
             EstadoInvitacion.ACEPTADO.value) + ') as sonAmigos, '
                                                '  u.foto '                                                                                                                                                                      'from usuario u '
-                                               '  where u.nombres LIKE %s or '
-                                               '      u.apellidos LIKE %s order by u.nombres desc',
-                         (idUser, friend, friend))
+                                               '  where lower(u.nombres) LIKE %s or '
+                                               '      lower(u.apellidos) LIKE %s order by u.nombres desc',
+                         (idUser, '%'+friend.lower()+'%', '%'+friend.lower()+'%'))
         result = self.cur.fetchall()
         friendList = []
         for row in result:
