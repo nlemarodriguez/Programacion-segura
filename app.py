@@ -120,5 +120,21 @@ def delete_commet(id):
     return redirect(url_for('profile', user=session.get('user_logged')))
 
 
+@app.route('/invite/<idInvitado>', methods=['POST'])
+def invite_friend(idInvitado):
+    if request.method == 'POST':
+        idUsuarioLogueado = session.get('user_logged')
+        db.invite_friend(idUsuarioLogueado, idInvitado)
+        info = db.infouser_by_id(idInvitado)[0]
+        flash('Invitación de amistad enviada exitosamente a << ' + (info['nombres']+" "+info['apellidos'] + ' >>'))
+        return redirect(request.referrer)
+
+@app.route('/requests')
+def requests():
+    idUser = session.get('user_logged')
+    requests = db.search_requests(idUser)
+    print(requests)
+    return render_template('requests.html', requests=requests)
+
 if __name__ == '__main__':
     app.run(port=3000, debug=True)

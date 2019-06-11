@@ -71,6 +71,13 @@ class Database:
         self.cur.execute('DELETE from comentario where id = %s', id)
         self.con.commit()
 
+<<<<<<< HEAD
+    def friends_list(self, id):
+        self.cur.execute(
+            'SELECT invitado.id, invitado.nombres, invitado.apellidos, invitado.foto FROM usuario invita, usuario invitado, invitacion i WHERE i.idusuario_invita = invita.id and i.idusuario_invitado = invitado.id and i.estado = ' + str(EstadoInvitacion.ACEPTADO.value) + ' and invita.id = %s union ALL SELECT invita.id, invita.nombres, invita.apellidos, invita.foto FROM usuario invitado, usuario invita, invitacion i WHERE i.idusuario_invitado = invitado.id and i.idusuario_invita = invita.id and i.estado = ' + str(EstadoInvitacion.ACEPTADO.value) + ' and invitado.id = %s', (id, id))
+        result = self.cur.fetchall()
+        return result
+=======
     def invite_friend(self, idUsuarioLogueado, idUsuarioAgregar):
         self.cur.execute(
             "INSERT INTO invitacion (estado, idusuario_invita, idusuario_invitado) VALUES (%s,%s,%s)",
@@ -95,9 +102,4 @@ class Database:
             s = SolicitudAmigo(row['id'], row['nombres'], row['apellidos'], row['sexo'], row['fechaNacimiento'], row['foto'])
             requests.append(s)
         return requests
-        
-    def friends_list(self, id):
-        self.cur.execute(
-            'SELECT invitado.id, invitado.nombres, invitado.apellidos, invitado.foto FROM usuario invita, usuario invitado, invitacion i WHERE i.idusuario_invita = invita.id and i.idusuario_invitado = invitado.id and i.estado = ' + str(EstadoInvitacion.ACEPTADO.value) + ' and invita.id = %s union ALL SELECT invita.id, invita.nombres, invita.apellidos, invita.foto FROM usuario invitado, usuario invita, invitacion i WHERE i.idusuario_invitado = invitado.id and i.idusuario_invita = invita.id and i.estado = ' + str(EstadoInvitacion.ACEPTADO.value) + ' and invitado.id = %s', (id, id))
-        result = self.cur.fetchall()
-        return result
+>>>>>>> 24855d255fd6f6dc134e6bd628d3364d2d0c7116
