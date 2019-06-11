@@ -45,7 +45,10 @@ def profile():
     comentarios_del_usuario = db.wallposts_by_user(iduser)
     print(comentarios_del_usuario)
     user = db.infouser_by_id(iduser)
-    return render_template('profile.html', user=user[0], comentarios=comentarios_del_usuario)
+    amigos = db.friends_list(iduser)
+    print('los amigos son: ')
+    print(amigos)
+    return render_template('profile.html', user=user[0], comentarios=comentarios_del_usuario, amigos=amigos)
 
 #Example: http://127.0.0.1:3000/search?friend=Maria
 @app.route('/search')

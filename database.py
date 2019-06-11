@@ -42,7 +42,7 @@ class Database:
                                                '  u.foto '                                                                                                                                                                      'from usuario u '
                                                '  where lower(u.nombres) LIKE %s or '
                                                '      lower(u.apellidos) LIKE %s order by u.nombres desc',
-                         (idUser, '%'+friend.lower()+'%', '%'+friend.lower()+'%'))
+                         (idUser, '%' + friend.lower() + '%', '%' + friend.lower() + '%'))
         result = self.cur.fetchall()
         friendList = []
         for row in result:
@@ -69,3 +69,9 @@ class Database:
     def delete_commet(self, id):
         self.cur.execute('DELETE from comentario where id = %s', id)
         self.con.commit()
+
+    def friends_list(self, id):
+        self.cur.execute(
+            'SELECT invitado.id, invitado.nombres, invitado.apellidos, invitado.foto FROM usuario invita, usuario invitado, invitacion i WHERE i.idusuario_invita = invita.id and i.idusuario_invitado = invitado.id and i.estado = ' + str(EstadoInvitacion.ACEPTADO.value) + ' and invita.id = %s union ALL SELECT invita.id, invita.nombres, invita.apellidos, invita.foto FROM usuario invitado, usuario invita, invitacion i WHERE i.idusuario_invitado = invitado.id and i.idusuario_invita = invita.id and i.estado = ' + str(EstadoInvitacion.ACEPTADO.value) + ' and invitado.id = %s', (id, id))
+        result = self.cur.fetchall()
+        return result
