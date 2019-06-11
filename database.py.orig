@@ -42,7 +42,11 @@ class Database:
                                                '  u.foto '                                                                                                                                                                      'from usuario u '
                                                '  where lower(u.nombres) LIKE %s or '
                                                '      lower(u.apellidos) LIKE %s order by u.nombres desc',
+<<<<<<< HEAD
+                         (idUser, '%' + friend.lower() + '%', '%' + friend.lower() + '%'))
+=======
                          (idUser, idUser, '%'+friend.lower()+'%', '%'+friend.lower()+'%'))
+>>>>>>> c7ee0ce02e7ebc73194ef32ca33ba39e859f743d
         result = self.cur.fetchall()
         friendList = []
         for row in result:

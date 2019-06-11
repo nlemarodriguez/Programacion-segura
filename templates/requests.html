@@ -2,7 +2,7 @@
 
 {% block body %}
 <div class="container">
-    <h1 class="h3 mb-3">Listado de coincidencias</h1>
+    <h1 class="h3 mb-3">Solicitudes de Amistad</h1>
     {% with messages = get_flashed_messages()  %}
     {% if messages %}
     {% for message in messages %}
@@ -22,8 +22,8 @@
     <div class="row">
         <div class="col-md-8 col-centered">
             <div class="people-nearby">
-                {% if friends %}
-                    {% for friend in friends %}
+                {% if requests %}
+                    {% for friend in requests %}
                     <div class="nearby-user">
                         <div class="row">
                             <div class="col-md-2 col-sm-2">
@@ -35,20 +35,14 @@
                                 <p><b>Sexo:</b> {{ friend.sexo }}</p>
                             </div>
                             <div class="col-md-3 col-sm-3">
-                                {% if friend.sonAmigos == False and friend.invitacionPendiente == False %}
-                                <form action="/invite/{{ friend.id }}" method="post">
-                                    <button class="btn btn-primary pull-right" style="margin-bottom:6px">Agregar Amigo</button>
-                                </form>
-                                {% else %}
-                                    <p class="text-danger">Invitación Pendiente</p>
-                                {% endif %}
-                                <a class="btn btn-success pull-right" href="/profile?user={{ friend.id }}">Ver Perfil</a>
+                                <a class="btn btn-success pull-right" style="margin-bottom:6px" href="#">Aceptar</a>
+                                <a class="btn btn-danger pull-right" href="#">Rechazar</a>
                             </div>
                         </div>
                     </div>
                     {% endfor %}
                 {% else %}
-                <div class="alert alert-warning">No se encontraron resultados!</div>
+                <div class="alert alert-warning">No se encontraron invitaciones!</div>
                 {% endif %}
 
         </div>
