@@ -41,10 +41,12 @@ class Database:
                          '      as estadoInvitacion, '
                                                '  u.foto '                                                                                                                                                                      'from usuario u '
                                                '  where lower(u.nombres) LIKE %s or '
-                                               '      lower(u.apellidos) LIKE %s '
-                         '                              AND u.id != %s '
-                         '                              order by u.nombres desc',
-                         (idUser, idUser, '%'+friend.lower()+'%', '%'+friend.lower()+'%', idUser))
+                                               '      lower(u.apellidos) LIKE %s order by u.nombres desc',
+<<<<<<< HEAD
+                         (idUser, '%' + friend.lower() + '%', '%' + friend.lower() + '%'))
+=======
+                         (idUser, idUser, '%'+friend.lower()+'%', '%'+friend.lower()+'%'))
+>>>>>>> c7ee0ce02e7ebc73194ef32ca33ba39e859f743d
         result = self.cur.fetchall()
         friendList = []
         for row in result:
@@ -85,9 +87,9 @@ class Database:
 
     def search_requests(self, idUser):
         self.cur.execute('SELECT u.id, u.nombres, u.apellidos, u.sexo, u.fechaNacimiento, u.foto '                                                                                                                                                                      'from usuario u '
-                            '  WHERE u.id in (select i.idusuario_invita from invitacion i where i.idusuario_invitado = %s and i.estado = %s) '
+                            '  WHERE u.id in (select i.idusuario_invita from invitacion i where i.idusuario_invitado = %s) '
                          '      ORDER BY u.nombres desc',
-                            (idUser, EstadoInvitacion.PENDIENTE.value)
+                            (idUser)
                          )
         result = self.cur.fetchall()
         requests = []

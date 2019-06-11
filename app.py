@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, url_for, jsonify, flash, redi
 from flask_bootstrap import Bootstrap
 from database import Database
 
-#UPLOAD_FOLDER = '/static/imagen_perfil'
+URL_FOLDER = '/static/imagen_perfil/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(APP_ROOT, 'static', 'imagen_perfil')
@@ -45,7 +45,10 @@ def profile():
     comentarios_del_usuario = db.wallposts_by_user(iduser)
     print(comentarios_del_usuario)
     user = db.infouser_by_id(iduser)
-    return render_template('profile.html', user=user[0], comentarios=comentarios_del_usuario)
+    amigos = db.friends_list(iduser)
+    print('los amigos son: ')
+    print(amigos)
+    return render_template('profile.html', user=user[0], comentarios=comentarios_del_usuario, amigos=amigos)
 
 #Example: http://127.0.0.1:3000/search?friend=Maria
 @app.route('/search')
@@ -82,34 +85,32 @@ def allowed_file(filename):
 @app.route('/registrar_usuario', methods=['POST'])
 def reister():
     if request.method == 'POST':
-        #if 'file' not in request.files:
-        # latestfile = request.files['customlogo']
-        #         # full_filename = os.path.join(app.config['UPLOAD_FOLDER'], 'logo.png')
-        #         # latestfile.save(full_filename)
-
-
-        file = request.files['files[]']
-        # if user does not select file, browser also
-        # submit an empty part without filename
-        if file and allowed_file(file.filename):
-            filename = file.filename
-            flash('file {} saved'.format(file.filename))
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
-            #file.save(app.config['UPLOAD_FOLDER'] + "/" + filename)
-
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         email = request.form['email']
         password = request.form['password']
         gender = request.form['gender']
-        photo = '/static/imagen_perfil' + '/' + file.filename
+        file = request.files['files[]']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file and allowed_file(file.filename):
+            filename = file.filename
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            photo = URL_FOLDER + file.filename
+        else:
+            if gender == 'F':
+                photo = URL_FOLDER + 'woman-img.png'
+            else:
+                photo = URL_FOLDER + 'man-img.png'
+
         existeCorreo = db.verificar_correo(email)
         if existeCorreo:
-            return str("Usuario ya existe")
+            flash('Usuario ya existe')
+            return render_template('registro.html')
         else:
             db.registrar_post(first_name, last_name, email, password, gender, photo)
-            return str('usuario registrado')
-
+            flash('Usuario registrado con éxito')
+            return redirect(url_for('index'))
 
 @app.route('/delete_commmet/<id>', methods=['POST', 'GET'])
 def delete_commet(id):
