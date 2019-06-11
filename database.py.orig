@@ -37,19 +37,21 @@ class Database:
 
     def search_friends(self, idUser, friend):
         self.cur.execute('SELECT u.id, u.nombres, u.apellidos, u.sexo, u.fechaNacimiento, '
-                         '  (select i.estado from invitacion i where i.idusuario_invita = %s and i.idusuario_invitado = u.id order by i.fecha desc limit 1) '
+                         '  (select i.estado from invitacion i where (i.idusuario_invita = %s and i.idusuario_invitado = u.id) or (i.idusuario_invitado = %s and i.idusuario_invita = u.id) order by i.fecha desc limit 1) '
                          '      as estadoInvitacion, '
                                                '  u.foto '                                                                                                                                                                      'from usuario u '
                                                '  where lower(u.nombres) LIKE %s or '
                                                '      lower(u.apellidos) LIKE %s order by u.nombres desc',
+<<<<<<< HEAD
                          (idUser, '%' + friend.lower() + '%', '%' + friend.lower() + '%'))
+=======
+                         (idUser, idUser, '%'+friend.lower()+'%', '%'+friend.lower()+'%'))
+>>>>>>> c7ee0ce02e7ebc73194ef32ca33ba39e859f743d
         result = self.cur.fetchall()
         friendList = []
         for row in result:
-            friend = Amigo(row['id'], row['nombres'], row['apellidos'], row['sexo'], row['fechaNacimiento'],
-                           row['estadoInvitacion'], row['foto'])
-            print(friend.estadoInvitacion)
-            friendList.append(friend)
+            amigo = Amigo(row['id'], row['nombres'], row['apellidos'], row['sexo'], row['fechaNacimiento'], row['estadoInvitacion'], row['foto'])
+            friendList.append(amigo)
         return friendList
 
     def registrar_post(self, first_name, last_name, email, password, gender, photo):
@@ -71,13 +73,6 @@ class Database:
         self.cur.execute('DELETE from comentario where id = %s', id)
         self.con.commit()
 
-<<<<<<< HEAD
-    def friends_list(self, id):
-        self.cur.execute(
-            'SELECT invitado.id, invitado.nombres, invitado.apellidos, invitado.foto FROM usuario invita, usuario invitado, invitacion i WHERE i.idusuario_invita = invita.id and i.idusuario_invitado = invitado.id and i.estado = ' + str(EstadoInvitacion.ACEPTADO.value) + ' and invita.id = %s union ALL SELECT invita.id, invita.nombres, invita.apellidos, invita.foto FROM usuario invitado, usuario invita, invitacion i WHERE i.idusuario_invitado = invitado.id and i.idusuario_invita = invita.id and i.estado = ' + str(EstadoInvitacion.ACEPTADO.value) + ' and invitado.id = %s', (id, id))
-        result = self.cur.fetchall()
-        return result
-=======
     def invite_friend(self, idUsuarioLogueado, idUsuarioAgregar):
         self.cur.execute(
             "INSERT INTO invitacion (estado, idusuario_invita, idusuario_invitado) VALUES (%s,%s,%s)",
@@ -102,4 +97,9 @@ class Database:
             s = SolicitudAmigo(row['id'], row['nombres'], row['apellidos'], row['sexo'], row['fechaNacimiento'], row['foto'])
             requests.append(s)
         return requests
->>>>>>> 24855d255fd6f6dc134e6bd628d3364d2d0c7116
+        
+    def friends_list(self, id):
+        self.cur.execute(
+            'SELECT invitado.id, invitado.nombres, invitado.apellidos, invitado.foto FROM usuario invita, usuario invitado, invitacion i WHERE i.idusuario_invita = invita.id and i.idusuario_invitado = invitado.id and i.estado = ' + str(EstadoInvitacion.ACEPTADO.value) + ' and invita.id = %s union ALL SELECT invita.id, invita.nombres, invita.apellidos, invita.foto FROM usuario invitado, usuario invita, invitacion i WHERE i.idusuario_invitado = invitado.id and i.idusuario_invita = invita.id and i.estado = ' + str(EstadoInvitacion.ACEPTADO.value) + ' and invitado.id = %s', (id, id))
+        result = self.cur.fetchall()
+        return result
