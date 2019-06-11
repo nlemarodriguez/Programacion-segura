@@ -40,7 +40,9 @@
                                     <button class="btn btn-primary pull-right" style="margin-bottom:6px">Agregar Amigo</button>
                                 </form>
                                 {% else %}
-                                    <p class="text-danger">Invitación Pendiente</p>
+                                    {% if friend.invitacionPendiente %}
+                                        <p class="text-danger">Invitación Pendiente</p>
+                                    {% endif %}
                                 {% endif %}
                                 <a class="btn btn-success pull-right" href="/profile?user={{ friend.id }}">Ver Perfil</a>
                             </div>

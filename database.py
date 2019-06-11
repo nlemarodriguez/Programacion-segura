@@ -41,8 +41,10 @@ class Database:
                          '      as estadoInvitacion, '
                                                '  u.foto '                                                                                                                                                                      'from usuario u '
                                                '  where lower(u.nombres) LIKE %s or '
-                                               '      lower(u.apellidos) LIKE %s order by u.nombres desc',
-                         (idUser, idUser, '%'+friend.lower()+'%', '%'+friend.lower()+'%'))
+                                               '      lower(u.apellidos) LIKE %s '
+                         '                              AND u.id != %s '
+                         '                              order by u.nombres desc',
+                         (idUser, idUser, '%'+friend.lower()+'%', '%'+friend.lower()+'%', idUser))
         result = self.cur.fetchall()
         friendList = []
         for row in result:
@@ -83,9 +85,9 @@ class Database:
 
     def search_requests(self, idUser):
         self.cur.execute('SELECT u.id, u.nombres, u.apellidos, u.sexo, u.fechaNacimiento, u.foto '                                                                                                                                                                      'from usuario u '
-                            '  WHERE u.id in (select i.idusuario_invita from invitacion i where i.idusuario_invitado = %s) '
+                            '  WHERE u.id in (select i.idusuario_invita from invitacion i where i.idusuario_invitado = %s and i.estado = %s) '
                          '      ORDER BY u.nombres desc',
-                            (idUser)
+                            (idUser, EstadoInvitacion.PENDIENTE.value)
                          )
         result = self.cur.fetchall()
         requests = []
