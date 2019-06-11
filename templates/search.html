@@ -3,6 +3,22 @@
 {% block body %}
 <div class="container">
     <h1 class="h3 mb-3">Listado de coincidencias</h1>
+    {% with messages = get_flashed_messages()  %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="row">
+        <div class="col-md-8 col-centered">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <b>{{ message }}</b>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
     <div class="row">
         <div class="col-md-8 col-centered">
             <div class="people-nearby">
@@ -16,11 +32,15 @@
                             <div class="col-md-7 col-sm-7">
                                 <h5 class="fiend-name">{{ friend.nombresCompletos }}</h5>
                                 <p><b>Fecha Nacimiento:</b> {{ friend.fechaNacimiento }}</p>
-                                <p><b>Sexo:</b> {{ friend.sexo }}</p>
+                                <p><b>Sexo:</b> {{ friend.sexo }} - {{ friend.invitacionPendiente }}</p>
                             </div>
                             <div class="col-md-3 col-sm-3">
-                                {% if friend.sonAmigos == False %}
-                                <button class="btn btn-primary pull-right" style="margin-bottom:6px">Agregar Amigo</button>
+                                {% if friend.sonAmigos == False and friend.invitacionPendiente == False %}
+                                <form action="/invite/{{ friend.id }}" method="post">
+                                    <button class="btn btn-primary pull-right" style="margin-bottom:6px">Agregar Amigo</button>
+                                </form>
+                                {% else %}
+                                    <p class="text-danger">Invitación Pendiente</p>
                                 {% endif %}
                                 <a class="btn btn-success pull-right" href="/profile?user={{ friend.id }}">Ver Perfil</a>
                             </div>

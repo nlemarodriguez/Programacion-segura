@@ -37,8 +37,8 @@ class Database:
 
     def search_friends(self, idUser, friend):
         self.cur.execute('SELECT u.id, u.nombres, u.apellidos, u.sexo, u.fechaNacimiento, '
-                         '  (select count(*) > 0 from invitacion i where i.idusuario_invita = %s and i.idusuario_invitado = u.id and i.estado = ' + str(
-            EstadoInvitacion.ACEPTADO.value) + ') as sonAmigos, '
+                         '  (select i.estado from invitacion i where i.idusuario_invita = %s and i.idusuario_invitado = u.id order by i.fecha desc limit 1) '
+                         '      as estadoInvitacion, '
                                                '  u.foto '                                                                                                                                                                      'from usuario u '
                                                '  where lower(u.nombres) LIKE %s or '
                                                '      lower(u.apellidos) LIKE %s order by u.nombres desc',
@@ -47,7 +47,8 @@ class Database:
         friendList = []
         for row in result:
             friend = Amigo(row['id'], row['nombres'], row['apellidos'], row['sexo'], row['fechaNacimiento'],
-                           row['sonAmigos'], row['foto'])
+                           row['estadoInvitacion'], row['foto'])
+            print(friend.estadoInvitacion)
             friendList.append(friend)
         return friendList
 
@@ -68,4 +69,11 @@ class Database:
 
     def delete_commet(self, id):
         self.cur.execute('DELETE from comentario where id = %s', id)
+        self.con.commit()
+
+    def invite_friend(self, idUsuarioLogueado, idUsuarioAgregar):
+        self.cur.execute(
+            "INSERT INTO invitacion (estado, idusuario_invita, idusuario_invitado) VALUES (%s,%s,%s)",
+            (EstadoInvitacion.PENDIENTE.value, idUsuarioLogueado, idUsuarioAgregar)
+        )
         self.con.commit()
