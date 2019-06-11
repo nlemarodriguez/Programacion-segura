@@ -69,17 +69,6 @@ def post_comment(id):
         return redirect(url_for('profile', user=idusuario_comenta))
 
 
-@app.route('/users')
-def users():
-    def db_query():
-        db = Database()
-        emps = db.list_users()
-        return emps
-    res = db_query()
-    return str(res)
-    #return render_template('employees.html', result=res, content_type='application/json')
-
-
 @app.route('/registro')
 def registro():
     return render_template('registro.html')
@@ -120,6 +109,12 @@ def reister():
         else:
             db.registrar_post(first_name, last_name, email, password, gender, photo)
             return str('usuario registrado')
+
+
+@app.route('/delete_commmet/<id>', methods=['POST', 'GET'])
+def delete_commet(id):
+    db.delete_commet(id)
+    return redirect(url_for('profile', user=session.get('user_logged')))
 
 
 if __name__ == '__main__':

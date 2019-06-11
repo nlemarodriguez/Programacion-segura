@@ -51,13 +51,11 @@ class Database:
             friendList.append(friend)
         return friendList
 
-
     def registrar_post(self, first_name, last_name, email, password, gender, photo):
         self.cur.execute(
             "INSERT INTO usuario (nombres, apellidos, correo, password, sexo, foto) VALUES (%s,%s,%s,%s,%s,%s)",
             (first_name, last_name, email, password, gender, photo))
         self.con.commit()
-
 
     def verificar_correo(self, email):
         self.cur.execute('SELECT correo from usuario where correo = %s', email)
@@ -67,3 +65,7 @@ class Database:
             return False
         else:
             return True
+
+    def delete_commet(self, id):
+        self.cur.execute('DELETE from comentario where id = %s', id)
+        self.con.commit()

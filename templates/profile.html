@@ -3,99 +3,131 @@
 {% block body %}
     <div class="container">
 
-    <div class="row">
-        <div class="col-md-3">
-             <h1 class="h3 mb-2">Perfil</h1>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-3 ">
-            <div class="card mb-3">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Detalles Perfil</h5>
-                </div>
-                <div class="card-body text-center">
-                    <img src="{{ user.foto }}" class="img-fluid foto_perfil" width="128" height="128">
-                    <h4 class="card-title mb-0">{{ user.nombres }} {{ user.apellidos }}</h4>
-                    <div class="text-muted mb-2">Usuario de la Red Social</div>
-                </div>
+        <div class="row">
+            <div class="col-md-3">
+                <h1 class="h3 mb-2">Perfil</h1>
             </div>
         </div>
 
-        <div class="col-md-8 ">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Nueva Publicación</h5>
-                </div>
-                <div class="card-body h-100">
-                    <form action="/post_comment/{{ user.id }}" method="POST">
-                    <div class="form-group">
-                        <textarea name="texto_publicacion" class="form-control rounded-1" placeholder="Escribe un comentario ..." id="exampleFormControlTextarea1" rows="2"></textarea>
+        <div class="row">
+            <div class="col-md-3 ">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Detalles Perfil</h5>
                     </div>
-
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary btn-sm ">Publicar</button>
+                    <div class="card-body text-center">
+                        <img src="{{ user.foto }}" class="img-fluid foto_perfil" width="128" height="128">
+                        <h4 class="card-title mb-0">{{ user.nombres }} {{ user.apellidos }}</h4>
+                        <div class="text-muted mb-2">Usuario de la Red Social</div>
                     </div>
-                    </form>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Actividades</h5>
+
+            <div class="col-md-8 ">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Nueva Publicación</h5>
+                    </div>
+                    <div class="card-body h-100">
+                        <form action="/post_comment/{{ user.id }}" method="POST">
+                            <div class="form-group">
+                                <textarea name="texto_publicacion" class="form-control rounded-1"
+                                          placeholder="Escribe un comentario ..." id="exampleFormControlTextarea1"
+                                          rows="2"></textarea>
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary btn-sm ">Publicar</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div class="card-body h-100">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Actividades</h5>
+                    </div>
+                    <div class="card-body h-100">
 
-                    {% for c in comentarios %}
+                        {% for c in comentarios %}
 
-                        <div class="media">
-                            <img src="{{ c.foto }}" width="36" height="36" class="rounded-circle mr-2">
-                            {% if c.u_postea == user.id %}
-                                <div class="media-body">
-                                    <small class="float-right text-navy">5m ago</small>
-                                    <strong>{{ c.nombres }} {{ c.apellidos }}</strong>  {{ c.texto }}
-                                    <br>
-                                    <small class="text-muted">{{ c.fecha }}</small>
-                                    <br>
-                                </div>
-                            {% else %}
-                                <div class="media-body">
-                                    <small class="float-right text-navy">30m ago</small>
-                                    <strong>{{ c.nombres }} {{ c.apellidos }}</strong> publicó en el perfil de <strong>{{ user.nombres }} {{ user.apellidos }}</strong>
-                                    <br>
-                                    <small class="text-muted">{{ c.fecha }}</small>
-                                    <div class="border text-sm text-muted p-2 mt-1">
-                                        {{ c.texto }}
-                                    </div>
-                                    <div class="comment-meta">
-                                        <div class="d-flex justify-content-end">
-                                      <span><a href="#">Eliminar | </a></span>
-                                      <span>
-                                        <a class="" role="button" data-toggle="collapse" href="#replyCommentT{{ c.id }}" aria-expanded="false" aria-controls="collapseExample"> Responder</a>
-                                      </span>
-                                        </div>
-                                      <div class="collapse" id="replyCommentT{{ c.id }}">
-                                        <form>
-                                          <div class="form-group">
-                                            <textarea name="comment" placeholder="Tu comentario ..." class="form-control" rows="3"></textarea>
-                                          </div>
-                                          <div class="d-flex justify-content-end">
-                                                <button type="submit" class="btn btn-warning btn-sm ">Enviar</button>
+                            <div class="media">
+                                <img src="{{ c.foto }}" width="36" height="36" class="rounded-circle mr-2">
+                                {% if c.u_postea == user.id %}
+                                    <div class="media-body">
+                                        <small class="float-right text-navy">5m ago</small>
+                                        <strong>{{ c.nombres }} {{ c.apellidos }}</strong> {{ c.texto }}
+                                        <br>
+                                        <small class="text-muted">{{ c.fecha }}</small>
+                                        <div class="comment-meta">
+                                            <div class="d-flex justify-content-end">
+                                                {% if session.get('user_logged') == user.id %}
+                                                    <span><a href="/delete_commmet/{{ c.id }}">Eliminar | </a></span>
+                                                {% endif %}
+                                                <span>
+                                                <a class="" role="button" data-toggle="collapse"
+                                                   href="#replyCommentT{{ c.id }}" aria-expanded="false"
+                                                   aria-controls="collapseExample"> Responder</a>
+                                            </span>
                                             </div>
-                                        </form>
-                                      </div>
+                                            <div class="collapse" id="replyCommentT{{ c.id }}">
+                                                <form>
+                                                    <div class="form-group">
+                                                        <textarea name="comment" placeholder="Tu comentario ..."
+                                                                  class="form-control" rows="3"></textarea>
+                                                    </div>
+                                                    <div class="d-flex justify-content-end">
+                                                        <button type="submit" class="btn btn-warning btn-sm ">Enviar
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <br>
                                     </div>
-                                </div>
-                            {% endif %}
+                                {% else %}
+                                    <div class="media-body">
+                                        <small class="float-right text-navy">30m ago</small>
+                                        <strong>{{ c.nombres }} {{ c.apellidos }}</strong> publicó en el perfil de
+                                        <strong>{{ user.nombres }} {{ user.apellidos }}</strong>
+                                        <br>
+                                        <small class="text-muted">{{ c.fecha }}</small>
+                                        <div class="border text-sm text-muted p-2 mt-1">
+                                            {{ c.texto }}
+                                        </div>
+                                        <div class="comment-meta">
+                                            <div class="d-flex justify-content-end">
+                                                {% if session.get('user_logged') == user.id %}
+                                                    <span><a href="/delete_commmet/{{ c.id }}">Eliminar | </a></span>
+                                                {% endif %}
+                                                <span>
+                                        <a class="" role="button" data-toggle="collapse" href="#replyCommentT{{ c.id }}"
+                                           aria-expanded="false" aria-controls="collapseExample"> Responder</a>
+                                      </span>
+                                            </div>
+                                            <div class="collapse" id="replyCommentT{{ c.id }}">
+                                                <form>
+                                                    <div class="form-group">
+                                                        <textarea name="comment" placeholder="Tu comentario ..."
+                                                                  class="form-control" rows="3"></textarea>
+                                                    </div>
+                                                    <div class="d-flex justify-content-end">
+                                                        <button type="submit" class="btn btn-warning btn-sm ">Enviar
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
 
-                        </div>
-                        <hr>
+                            </div>
+                            <hr>
 
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    </div>
     </div>
 
 {% endblock %}
