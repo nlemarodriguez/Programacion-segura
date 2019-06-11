@@ -1,5 +1,5 @@
 from enums import EstadoInvitacion
-from models import Amigo
+from models import Amigo, SolicitudAmigo
 import pymysql
 
 
@@ -77,3 +77,21 @@ class Database:
             (EstadoInvitacion.PENDIENTE.value, idUsuarioLogueado, idUsuarioAgregar)
         )
         self.con.commit()
+
+    def get_request_number(self, idUsuario):
+        self.cur.execute('SELECT count(*) as total from invitacion i where idusuario_invitado = %s', idUsuario)
+        result = self.cur.fetchone()
+        return result
+
+    def search_requests(self, idUser):
+        self.cur.execute('SELECT u.id, u.nombres, u.apellidos, u.sexo, u.fechaNacimiento, u.foto '                                                                                                                                                                      'from usuario u '
+                            '  WHERE u.id in (select i.idusuario_invita from invitacion i where i.idusuario_invitado = %s) '
+                         '      ORDER BY u.nombres desc',
+                            (idUser)
+                         )
+        result = self.cur.fetchall()
+        requests = []
+        for row in result:
+            s = SolicitudAmigo(row['id'], row['nombres'], row['apellidos'], row['sexo'], row['fechaNacimiento'], row['foto'])
+            requests.append(s)
+        return requests

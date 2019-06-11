@@ -126,7 +126,12 @@ def invite_friend(idInvitado):
         flash('Invitación de amistad enviada exitosamente a << ' + (info['nombres']+" "+info['apellidos'] + ' >>'))
         return redirect(request.referrer)
 
-
+@app.route('/requests')
+def requests():
+    idUser = session.get('user_logged')
+    requests = db.search_requests(idUser)
+    print(requests)
+    return render_template('requests.html', requests=requests)
 
 if __name__ == '__main__':
     app.run(port=3000, debug=True)
