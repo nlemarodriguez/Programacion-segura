@@ -37,19 +37,17 @@ class Database:
 
     def search_friends(self, idUser, friend):
         self.cur.execute('SELECT u.id, u.nombres, u.apellidos, u.sexo, u.fechaNacimiento, '
-                         '  (select i.estado from invitacion i where i.idusuario_invita = %s and i.idusuario_invitado = u.id order by i.fecha desc limit 1) '
+                         '  (select i.estado from invitacion i where (i.idusuario_invita = %s and i.idusuario_invitado = u.id) or (i.idusuario_invitado = %s and i.idusuario_invita = u.id) order by i.fecha desc limit 1) '
                          '      as estadoInvitacion, '
                                                '  u.foto '                                                                                                                                                                      'from usuario u '
                                                '  where lower(u.nombres) LIKE %s or '
                                                '      lower(u.apellidos) LIKE %s order by u.nombres desc',
-                         (idUser, '%'+friend.lower()+'%', '%'+friend.lower()+'%'))
+                         (idUser, idUser, '%'+friend.lower()+'%', '%'+friend.lower()+'%'))
         result = self.cur.fetchall()
         friendList = []
         for row in result:
-            friend = Amigo(row['id'], row['nombres'], row['apellidos'], row['sexo'], row['fechaNacimiento'],
-                           row['estadoInvitacion'], row['foto'])
-            print(friend.estadoInvitacion)
-            friendList.append(friend)
+            amigo = Amigo(row['id'], row['nombres'], row['apellidos'], row['sexo'], row['fechaNacimiento'], row['estadoInvitacion'], row['foto'])
+            friendList.append(amigo)
         return friendList
 
     def registrar_post(self, first_name, last_name, email, password, gender, photo):
