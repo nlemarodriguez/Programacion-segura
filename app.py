@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, request, url_for, jsonify, flash, redirect, json, session
 from flask_bootstrap import Bootstrap
 from database import Database
+from enums import EstadoInvitacion
 
 URL_FOLDER = '/static/imagen_perfil/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
@@ -41,14 +42,21 @@ def login():
 
 @app.route('/profile')
 def profile():
-    iduser = request.args['user']
+    iduser = int(request.args['user'])
     comentarios_del_usuario = db.wallposts_by_user(iduser)
-    print(comentarios_del_usuario)
     user = db.infouser_by_id(iduser)
     amigos = db.friends_list(iduser)
-    print('los amigos son: ')
-    print(amigos)
-    return render_template('profile.html', user=user[0], comentarios=comentarios_del_usuario, amigos=amigos)
+    #Determina el estado de amistad con el perfil que se está consultando
+    estado_amistad = db.estado_amistad(session.get('user_logged'), iduser)
+    propio_perfil = False
+
+    if iduser == session.get('user_logged'):
+        propio_perfil = True
+
+    print('esAmigo/popioPerfil: '+str(estado_amistad)+'/'+str(propio_perfil))
+    return render_template('profile.html', user=user[0], comentarios=comentarios_del_usuario, amigos=amigos,
+                           estado_amistad=estado_amistad, propio_perfil=propio_perfil)
+
 
 #Example: http://127.0.0.1:3000/search?friend=Maria
 @app.route('/search')
@@ -112,6 +120,7 @@ def reister():
             flash('Usuario registrado con éxito')
             return redirect(url_for('index'))
 
+
 @app.route('/delete_commmet/<id>', methods=['POST', 'GET'])
 def delete_commet(id):
     db.delete_commet(id)
@@ -127,12 +136,21 @@ def invite_friend(idInvitado):
         flash('Invitación de amistad enviada exitosamente a << ' + (info['nombres']+" "+info['apellidos'] + ' >>'))
         return redirect(request.referrer)
 
+
 @app.route('/requests')
 def requests():
     idUser = session.get('user_logged')
     requests = db.search_requests(idUser)
     print(requests)
     return render_template('requests.html', requests=requests)
+
+
+@app.route('/reply_comment/<id_comentario_padre>', methods=['POST'])
+def reply_comment(id_comentario_padre):
+    if request.method == 'POST':
+        texto = request.form['comment']
+        db.insert_comment_reply(id_comentario_padre, texto, session.get('user_logged'))
+        return redirect(request.referrer)
 
 @app.route('/editarDatos')
 def editarDatos():
@@ -142,6 +160,7 @@ def editarDatos():
     print(datosUsuario)
     return render_template('editUser.html', datosUsuario=datosUsuario)
 
+        
 @app.route('/editar_usuario')
 def editarUsuario():
     if request.method == 'POST':

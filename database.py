@@ -102,6 +102,38 @@ class Database:
         result = self.cur.fetchall()
         return result
 
+    def estado_amistad(self, id_user, id_determinar):
+        if id_user == id_determinar:
+            return -1
+        else:
+            self.cur.execute("""
+            select estado from invitacion where idusuario_invita = %s and idusuario_invitado = %s 
+                               
+            """, (id_user, id_determinar))
+            result = self.cur.fetchone()
+            if result is None:
+                self.cur.execute("""
+                select estado from invitacion where idusuario_invita = %s and idusuario_invitado = %s 
+                """, (id_determinar, id_user))
+                result1 = self.cur.fetchone()
+                if result1 is None:
+                    return EstadoInvitacion.NEUTRAL.value
+                else:
+                    valor = result1['estado']
+                    if valor == 1:
+                        return 5
+                    else:
+                        return valor
+            else:
+                return result['estado']
+
+    def insert_comment_reply(self, id_comentario_padre, texto, id_usuario):
+        self.cur.execute(
+            "INSERT INTO comentario (texto, idcomentario, idusuario_postea) VALUES (%s,%s,%s)",
+            (texto, id_comentario_padre, id_usuario)
+        )
+        self.con.commit()
+
     def editar_usuario(self, first_name, last_name, email, password, gender, photo, id):
         self.cur.execute(
             'UPDATE usuario SET nombres = %s, apellidos = %s, correo = %s, password = %s, sexo = %s , foto = %s WHERE id = %s',
