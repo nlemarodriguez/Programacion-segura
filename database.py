@@ -102,17 +102,28 @@ class Database:
         result = self.cur.fetchall()
         return result
 
-    def estado_amistad(self, id_user, id_persona):
+    def estado_amistad(self, id_user, id_determinar):
 
-        if id_user == id_persona:
+        if id_user == id_determinar:
             return -1
         else:
             self.cur.execute("""
-            select estado from invitacion where (idusuario_invita = %s and idusuario_invitado = %s) or 
-            (idusuario_invita = %s and idusuario_invitado = %s)                    
-            """, (id_user, id_persona, id_persona, id_user))
+            select estado from invitacion where idusuario_invita = %s and idusuario_invitado = %s 
+                               
+            """, (id_user, id_determinar))
             result = self.cur.fetchone()
             if result is None:
-                return EstadoInvitacion.NEUTRAL.value
+                self.cur.execute("""
+                select estado from invitacion where idusuario_invita = %s and idusuario_invitado = %s 
+                """, (id_determinar, id_user))
+                result1 = self.cur.fetchone()
+                if result1 is None:
+                    return EstadoInvitacion.NEUTRAL.value
+                else:
+                    valor = result1['estado']
+                    if valor == 1:
+                        return 5
+                    else:
+                        return valor
             else:
                 return result['estado']

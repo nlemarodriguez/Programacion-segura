@@ -27,6 +27,9 @@
                             <button type="button" class="btn btn-success btn-sm" disabled>Actualmente amigos</button>
                         {% elif estado_amistad == 1 %}
                             <button type="button" class="btn btn-info btn-sm" disabled>Invitacion pendiente</button>
+                        {% elif estado_amistad == 5 %}
+                            <button type="button" class="btn btn-primary btn-sm mr-2">Aceptar</button>
+                            <button type="button" class="btn btn-danger btn-sm">Rechazar</button>
                         {% else %}
                             <button type="button" class="btn btn-primary btn-sm">Agregar amigo</button>
                         {% endif %}
