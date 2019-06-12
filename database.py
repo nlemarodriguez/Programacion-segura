@@ -101,3 +101,18 @@ class Database:
             'SELECT invitado.id, invitado.nombres, invitado.apellidos, invitado.foto FROM usuario invita, usuario invitado, invitacion i WHERE i.idusuario_invita = invita.id and i.idusuario_invitado = invitado.id and i.estado = ' + str(EstadoInvitacion.ACEPTADO.value) + ' and invita.id = %s union ALL SELECT invita.id, invita.nombres, invita.apellidos, invita.foto FROM usuario invitado, usuario invita, invitacion i WHERE i.idusuario_invitado = invitado.id and i.idusuario_invita = invita.id and i.estado = ' + str(EstadoInvitacion.ACEPTADO.value) + ' and invitado.id = %s', (id, id))
         result = self.cur.fetchall()
         return result
+
+    def estado_amistad(self, id_user, id_persona):
+
+        if id_user == id_persona:
+            return -1
+        else:
+            self.cur.execute("""
+            select estado from invitacion where (idusuario_invita = %s and idusuario_invitado = %s) or 
+            (idusuario_invita = %s and idusuario_invitado = %s)                    
+            """, (id_user, id_persona, id_persona, id_user))
+            result = self.cur.fetchone()
+            if result is None:
+                return EstadoInvitacion.NEUTRAL.value
+            else:
+                return result['estado']

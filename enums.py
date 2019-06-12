@@ -1,6 +1,7 @@
 from enum import Enum
 
 class EstadoInvitacion(Enum):
+    NEUTRAL = 0
     PENDIENTE = 1
     ACEPTADO = 2
     RECHAZADO = 3

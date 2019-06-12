@@ -10,7 +10,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-3 ">
+            <div class="col-md-3">
                 <div class="card mb-3">
                     <div class="card-header">
                         <h5 class="card-title mb-0">Detalles Perfil</h5>
@@ -21,6 +21,18 @@
                         <div class="text-muted mb-2">Usuario de la Red Social</div>
                     </div>
                 </div>
+                <div class="d-flex justify-content-center pb-2">
+                    {% if not propio_perfil %}
+                        {% if estado_amistad == 2 %}
+                            <button type="button" class="btn btn-success btn-sm" disabled>Actualmente amigos</button>
+                        {% elif estado_amistad == 1 %}
+                            <button type="button" class="btn btn-info btn-sm" disabled>Invitacion pendiente</button>
+                        {% else %}
+                            <button type="button" class="btn btn-primary btn-sm">Agregar amigo</button>
+                        {% endif %}
+                    {% endif %}
+                </div>
+
                 <div class="tab-pane fade in active show" id="profile-friends">
                     <h4 class="m-t-0 m-b-20">Lista de amigos ({{ amigos|length }})</h4>
                     {% for amigo in amigos %}
@@ -45,24 +57,26 @@
             </div>
 
             <div class="col-md-8 ">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Nueva Publicación</h5>
-                    </div>
-                    <div class="card-body h-100">
-                        <form action="/post_comment/{{ user.id }}" method="POST">
-                            <div class="form-group">
+                {% if propio_perfil or estado_amistad == 2 %}
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Nueva Publicación</h5>
+                        </div>
+                        <div class="card-body h-100">
+                            <form action="/post_comment/{{ user.id }}" method="POST">
+                                <div class="form-group">
                                 <textarea name="texto_publicacion" class="form-control rounded-1"
                                           placeholder="Escribe un comentario ..." id="exampleFormControlTextarea1"
                                           rows="2"></textarea>
-                            </div>
+                                </div>
 
-                            <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary btn-sm ">Publicar</button>
-                            </div>
-                        </form>
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary btn-sm ">Publicar</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </div>
+                {% endif %}
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">Actividades</h5>
@@ -79,30 +93,35 @@
                                         <strong>{{ c.nombres }} {{ c.apellidos }}</strong> {{ c.texto }}
                                         <br>
                                         <small class="text-muted">{{ c.fecha }}</small>
-                                        <div class="comment-meta">
-                                            <div class="d-flex justify-content-end">
-                                                {% if session.get('user_logged') == user.id %}
-                                                    <span><a href="/delete_commmet/{{ c.id }}">Eliminar | </a></span>
-                                                {% endif %}
-                                                <span>
-                                                <a class="" role="button" data-toggle="collapse"
-                                                   href="#replyCommentT{{ c.id }}" aria-expanded="false"
-                                                   aria-controls="collapseExample"> Responder</a>
-                                            </span>
-                                            </div>
-                                            <div class="collapse" id="replyCommentT{{ c.id }}">
-                                                <form>
-                                                    <div class="form-group">
+                                        {% if propio_perfil or estado_amistad == 2 %}
+                                            <div class="comment-meta">
+                                                <div class="d-flex justify-content-end">
+                                                    {% if propio_perfil %}
+                                                        <span><a
+                                                                href="/delete_commmet/{{ c.id }}">Eliminar | </a></span>
+                                                    {% endif %}
+
+                                                    <span>
+                                                    <a class="" role="button" data-toggle="collapse"
+                                                       href="#replyCommentT{{ c.id }}" aria-expanded="false"
+                                                       aria-controls="collapseExample"> Responder</a>
+                                                    </span>
+
+                                                </div>
+                                                <div class="collapse" id="replyCommentT{{ c.id }}">
+                                                    <form>
+                                                        <div class="form-group">
                                                         <textarea name="comment" placeholder="Tu comentario ..."
                                                                   class="form-control" rows="3"></textarea>
-                                                    </div>
-                                                    <div class="d-flex justify-content-end">
-                                                        <button type="submit" class="btn btn-warning btn-sm ">Enviar
-                                                        </button>
-                                                    </div>
-                                                </form>
+                                                        </div>
+                                                        <div class="d-flex justify-content-end">
+                                                            <button type="submit" class="btn btn-warning btn-sm ">Enviar
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
-                                        </div>
+                                        {% endif %}
                                         <br>
                                     </div>
                                 {% else %}
@@ -115,29 +134,32 @@
                                         <div class="border text-sm text-muted p-2 mt-1">
                                             {{ c.texto }}
                                         </div>
-                                        <div class="comment-meta">
-                                            <div class="d-flex justify-content-end">
-                                                {% if session.get('user_logged') == user.id %}
-                                                    <span><a href="/delete_commmet/{{ c.id }}">Eliminar | </a></span>
-                                                {% endif %}
-                                                <span>
+                                        {% if propio_perfil or estado_amistad == 2 %}
+                                            <div class="comment-meta">
+                                                <div class="d-flex justify-content-end">
+                                                    {% if propio_perfil %}
+                                                        <span><a
+                                                                href="/delete_commmet/{{ c.id }}">Eliminar | </a></span>
+                                                    {% endif %}
+                                                    <span>
                                         <a class="" role="button" data-toggle="collapse" href="#replyCommentT{{ c.id }}"
                                            aria-expanded="false" aria-controls="collapseExample"> Responder</a>
                                       </span>
-                                            </div>
-                                            <div class="collapse" id="replyCommentT{{ c.id }}">
-                                                <form>
-                                                    <div class="form-group">
+                                                </div>
+                                                <div class="collapse" id="replyCommentT{{ c.id }}">
+                                                    <form>
+                                                        <div class="form-group">
                                                         <textarea name="comment" placeholder="Tu comentario ..."
                                                                   class="form-control" rows="3"></textarea>
-                                                    </div>
-                                                    <div class="d-flex justify-content-end">
-                                                        <button type="submit" class="btn btn-warning btn-sm ">Enviar
-                                                        </button>
-                                                    </div>
-                                                </form>
+                                                        </div>
+                                                        <div class="d-flex justify-content-end">
+                                                            <button type="submit" class="btn btn-warning btn-sm ">Enviar
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
-                                        </div>
+                                        {% endif %}
                                     </div>
                                 {% endif %}
 
