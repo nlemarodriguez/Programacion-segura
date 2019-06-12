@@ -156,8 +156,6 @@ def reply_comment(id_comentario_padre):
 def editarDatos():
     idUser = session.get('user_logged')
     datosUsuario = db.infouser_by_id(idUser)[0]
-    print('++++++++++++++++++++++++++++++++++')
-    print(datosUsuario)
     return render_template('editUser.html', datosUsuario=datosUsuario)
 
         
