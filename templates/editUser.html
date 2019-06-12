@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="h3 mb-3">Editar datos</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% if datosUsuario %}
+            <div class="card">
+                <div class="card-body">
+                    <form action="/editar_usuario" method="POST" enctype="multipart/form-data">
+
+                        <div class="form-group">
+                            <label for="list">Imagen de perfil</label>
+                            <output id="list"></output>
+                            <input type="file" class="form-control-file" id="files" name="files[]"/>
+                            <br/>
+                        </div>
+                        <div class="form-group">
+                            <label>Nombres</label>
+                            <input class="form-control" required type="text" name="first_name"
+                                   value={{ datosUsuario.nombres }}>
+                        </div>
+                        <div class="form-group">
+                            <label>Apellidos</label>
+                            <input class="form-control" required type="text" name="last_name"
+                                   value={{ datosUsuario.apellidos }}>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input class="form-control" required type="email" name="email"
+                                   value={{ datosUsuario.correo }}>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input class="form-control" type="password" name="password">
+                        </div>
+                        <div class="form-group">
+                            <div>
+                                <label class="radio-container">Femenino
+                                    <input type="radio" checked="checked" value="F" name="gender">
+                                </label>
+                                <label class="radio-container">Masculino
+                                    <input type="radio" checked="checked" value="M" name="gender">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha de nacimiento</label>
+                            <input class="form-control" required type="text" name="fechaNac"
+                                   value={{ datosUsuario.fechaNacimiento }}>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <button type="submit" class="btn btn-primary">Editar</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        {% endif %}
+    </div>
+
+{% endblock %}
+

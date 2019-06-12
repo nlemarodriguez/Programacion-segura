@@ -52,7 +52,7 @@ class Database:
             friendList.append(amigo)
         return friendList
 
-    def registrar_post(self, first_name, last_name, email, password, gender, photo):
+    def registrar_usuario(self, first_name, last_name, email, password, gender, photo):
         self.cur.execute(
             "INSERT INTO usuario (nombres, apellidos, correo, password, sexo, foto) VALUES (%s,%s,%s,%s,%s,%s)",
             (first_name, last_name, email, password, gender, photo))
@@ -101,3 +101,9 @@ class Database:
             'SELECT invitado.id, invitado.nombres, invitado.apellidos, invitado.foto FROM usuario invita, usuario invitado, invitacion i WHERE i.idusuario_invita = invita.id and i.idusuario_invitado = invitado.id and i.estado = ' + str(EstadoInvitacion.ACEPTADO.value) + ' and invita.id = %s union ALL SELECT invita.id, invita.nombres, invita.apellidos, invita.foto FROM usuario invitado, usuario invita, invitacion i WHERE i.idusuario_invitado = invitado.id and i.idusuario_invita = invita.id and i.estado = ' + str(EstadoInvitacion.ACEPTADO.value) + ' and invitado.id = %s', (id, id))
         result = self.cur.fetchall()
         return result
+
+    def editar_usuario(self, first_name, last_name, email, password, gender, photo, id):
+        self.cur.execute(
+            'UPDATE usuario SET nombres = %s, apellidos = %s, correo = %s, password = %s, sexo = %s , foto = %s WHERE id = %s',
+            (first_name, last_name, email, password, gender, photo, id))
+        self.con.commit()

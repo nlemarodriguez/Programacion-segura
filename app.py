@@ -108,7 +108,7 @@ def reister():
             flash('Usuario ya existe')
             return render_template('registro.html')
         else:
-            db.registrar_post(first_name, last_name, email, password, gender, photo)
+            db.registrar_usuario(first_name, last_name, email, password, gender, photo)
             flash('Usuario registrado con éxito')
             return redirect(url_for('index'))
 
@@ -133,6 +133,44 @@ def requests():
     requests = db.search_requests(idUser)
     print(requests)
     return render_template('requests.html', requests=requests)
+
+@app.route('/editarDatos')
+def editarDatos():
+    idUser = session.get('user_logged')
+    datosUsuario = db.infouser_by_id(idUser)[0]
+    print('++++++++++++++++++++++++++++++++++')
+    print(datosUsuario)
+    return render_template('editUser.html', datosUsuario=datosUsuario)
+
+@app.route('/editar_usuario')
+def editarUsuario():
+    if request.method == 'POST':
+        idUser = request.args['user']
+        datosUsuario = db.infouser_by_id(idUser)[0]
+
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        email = request.form['email']
+        gender = request.form['gender']
+        file = request.files['files[]']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file and allowed_file(file.filename):
+            filename = file.filename
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            photo = URL_FOLDER + file.filename
+        else:
+            photo = datosUsuario.foto
+
+        password = datosUsuario.password
+        if request.form['password'] != '':
+            password = request.form['password']
+
+        db.editar_usuario(first_name, last_name, email, password, gender, photo, idUser)
+        flash('Se editaron los con éxito')
+        return redirect(url_for('editarDatos'))
+
+
 
 if __name__ == '__main__':
     app.run(port=3000, debug=True)
