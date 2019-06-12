@@ -111,8 +111,8 @@
                                                     </span>
 
                                                 </div>
-                                                <div class="collapse" id="replyCommentT{{ c.id }}">
-                                                    <form>
+                                                <div class="collapse" id="replyCommentT">
+                                                    <form action="/reply_comment/{{ c.id }}" method="POST">
                                                         <div class="form-group">
                                                         <textarea name="comment" placeholder="Tu comentario ..."
                                                                   class="form-control" rows="3"></textarea>
@@ -150,7 +150,7 @@
                                       </span>
                                                 </div>
                                                 <div class="collapse" id="replyCommentT{{ c.id }}">
-                                                    <form>
+                                                    <form action="/reply_comment/{{ c.id }}" method="POST">
                                                         <div class="form-group">
                                                         <textarea name="comment" placeholder="Tu comentario ..."
                                                                   class="form-control" rows="3"></textarea>

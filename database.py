@@ -103,7 +103,6 @@ class Database:
         return result
 
     def estado_amistad(self, id_user, id_determinar):
-
         if id_user == id_determinar:
             return -1
         else:
@@ -127,3 +126,10 @@ class Database:
                         return valor
             else:
                 return result['estado']
+
+    def insert_comment_reply(self, id_comentario_padre, texto, id_usuario):
+        self.cur.execute(
+            "INSERT INTO comentario (texto, idcomentario, idusuario_postea) VALUES (%s,%s,%s)",
+            (texto, id_comentario_padre, id_usuario)
+        )
+        self.con.commit()

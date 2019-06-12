@@ -145,5 +145,13 @@ def requests():
     return render_template('requests.html', requests=requests)
 
 
+@app.route('/reply_comment/<id_comentario_padre>', methods=['POST'])
+def reply_comment(id_comentario_padre):
+    if request.method == 'POST':
+        texto = request.form['comment']
+        db.insert_comment_reply(id_comentario_padre, texto, session.get('user_logged'))
+        return redirect(request.referrer)
+
+
 if __name__ == '__main__':
     app.run(port=3000, debug=True)
