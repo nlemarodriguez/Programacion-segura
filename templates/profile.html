@@ -74,6 +74,7 @@
                                 </div>
 
                                 <div class="d-flex justify-content-end">
+
                                     <button type="submit" class="btn btn-primary btn-sm ">Publicar</button>
                                 </div>
                             </form>
@@ -92,7 +93,7 @@
                                 <img src="{{ c.foto }}" width="36" height="36" class="rounded-circle mr-2">
                                 {% if c.u_postea == user.id %}
                                     <div class="media-body">
-                                        <small class="float-right text-navy">5m ago</small>
+                                        <small class="float-right text-navy">{{ c.pretty_date }}</small>
                                         <strong>{{ c.nombres }} {{ c.apellidos }}</strong> {{ c.texto }}
                                         <br>
                                         <small class="text-muted">{{ c.fecha }}</small>
@@ -129,7 +130,7 @@
                                     </div>
                                 {% else %}
                                     <div class="media-body">
-                                        <small class="float-right text-navy">30m ago</small>
+                                        <small class="float-right text-navy">{{ c.pretty_date }}</small>
                                         <strong>{{ c.nombres }} {{ c.apellidos }}</strong> publicó en el perfil de
                                         <strong>{{ user.nombres }} {{ user.apellidos }}</strong>
                                         <br>

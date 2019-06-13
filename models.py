@@ -25,3 +25,16 @@ class SolicitudAmigo(object):
     self.sexo = Sexo.from_code(sexo).value
     self.fechaNacimiento = fechaNacimiento
     self.foto = foto
+
+
+class Comentario(object):
+
+  def __init__(self, id, texto, fecha, nombres, apellidos, foto, u_postea, pretty_date):
+    self.id = id
+    self.texto = texto
+    self.fecha = fecha
+    self.nombres = nombres
+    self.apellidos = apellidos
+    self.u_postea = u_postea
+    self.foto = foto
+    self.pretty_date = pretty_date
