@@ -187,7 +187,25 @@ def editarUsuario():
         flash('Se editaron los con éxito')
         return redirect(url_for('editarDatos'))
 
+@app.route('/acceptFriend/<idInvitation>', methods=['POST'])
+def accept_friend(idInvitation):
+    if request.method == 'POST':
+        try:
+            db.accept_friend(idInvitation)
+            flash('Invitación aceptada exitosamente!', category='success')
+        except:
+            flash('Ha ocurrido un error al aceptar la invitación!', category='error')
+        return redirect(request.referrer)
 
+@app.route('/refuseFriend/<idInvitation>', methods=['POST'])
+def refuse_friend(idInvitation):
+    if request.method == 'POST':
+        try:
+            db.refuse_friend(idInvitation)
+            flash('Invitación de amistad rechazada!', category='warning')
+        except:
+            flash('Ha ocurrido un error al rechazar la invitación!', category='error')
+        return redirect(request.referrer)
 
 if __name__ == '__main__':
     app.run(port=3000, debug=True)

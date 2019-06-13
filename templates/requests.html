@@ -3,13 +3,13 @@
 {% block body %}
 <div class="container">
     <h1 class="h3 mb-3">Solicitudes de Amistad</h1>
-    {% with messages = get_flashed_messages()  %}
+    {% with messages = get_flashed_messages(with_categories=True)  %}
     {% if messages %}
     {% for message in messages %}
     <div class="row">
         <div class="col-md-8 col-centered">
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <b>{{ message }}</b>
+            <div class="alert alert-{{ message[0] }} alert-dismissible fade show" role="alert">
+                <b>{{ message[1] }}</b>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -35,8 +35,12 @@
                                 <p><b>Sexo:</b> {{ friend.sexo }}</p>
                             </div>
                             <div class="col-md-3 col-sm-3">
-                                <a class="btn btn-success pull-right" style="margin-bottom:6px" href="#">Aceptar</a>
-                                <a class="btn btn-danger pull-right" href="#">Rechazar</a>
+                                <form action="/acceptFriend/{{ friend.idInvitacion }}" method="post">
+                                    <button class="btn btn-success pull-right" style="margin-bottom:6px">Aceptar</button>
+                                </form>
+                                <form action="/refuseFriend/{{ friend.idInvitacion }}" method="post">
+                                    <button class="btn btn-danger pull-right" style="margin-bottom:6px">Rechazar</button>
+                                </form>
                             </div>
                         </div>
                     </div>
