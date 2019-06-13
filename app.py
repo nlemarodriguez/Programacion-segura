@@ -159,12 +159,11 @@ def editarDatos():
     return render_template('editUser.html', datosUsuario=datosUsuario)
 
         
-@app.route('/editar_usuario')
+@app.route('/editar_usuario', methods=['POST'])
 def editarUsuario():
     if request.method == 'POST':
-        idUser = request.args['user']
+        idUser = session.get('user_logged')
         datosUsuario = db.infouser_by_id(idUser)[0]
-
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         email = request.form['email']
@@ -177,9 +176,9 @@ def editarUsuario():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             photo = URL_FOLDER + file.filename
         else:
-            photo = datosUsuario.foto
+            photo = datosUsuario['foto']
 
-        password = datosUsuario.password
+        password = datosUsuario['password']
         if request.form['password'] != '':
             password = request.form['password']
 
