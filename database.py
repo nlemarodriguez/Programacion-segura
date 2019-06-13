@@ -84,15 +84,16 @@ class Database:
         return result
 
     def search_requests(self, idUser):
-        self.cur.execute('SELECT u.id, u.nombres, u.apellidos, u.sexo, u.fechaNacimiento, u.foto '                                                                                                                                                                      'from usuario u '
-                            '  WHERE u.id in (select i.idusuario_invita from invitacion i where i.idusuario_invitado = %s and i.estado = %s) '
+        self.cur.execute('SELECT i.id as idInvitacion, u.id as idUsuario, u.nombres, u.apellidos, u.sexo, u.fechaNacimiento, u.foto '
+                         ' from usuario u join invitacion i on u.id = i.idusuario_invita '
+                            '  WHERE i.idusuario_invitado = %s and i.estado = %s '
                          '      ORDER BY u.nombres desc',
                             (idUser, EstadoInvitacion.PENDIENTE.value)
                          )
         result = self.cur.fetchall()
         requests = []
         for row in result:
-            s = SolicitudAmigo(row['id'], row['nombres'], row['apellidos'], row['sexo'], row['fechaNacimiento'], row['foto'])
+            s = SolicitudAmigo(row['idInvitacion'], row['idUsuario'], row['nombres'], row['apellidos'], row['sexo'], row['fechaNacimiento'], row['foto'])
             requests.append(s)
         return requests
         
@@ -138,4 +139,18 @@ class Database:
         self.cur.execute(
             'UPDATE usuario SET nombres = %s, apellidos = %s, correo = %s, password = %s, sexo = %s , foto = %s WHERE id = %s',
             (first_name, last_name, email, password, gender, photo, id))
+        self.con.commit()
+
+    def accept_friend(self, idInvitation):
+        self.cur.execute(
+            'UPDATE invitacion SET estado = %s WHERE id = %s',
+            (EstadoInvitacion.ACEPTADO.value, idInvitation)
+        )
+        self.con.commit()
+
+    def refuse_friend(self, idInvitation):
+        self.cur.execute(
+            'UPDATE invitacion SET estado = %s WHERE id = %s',
+            (EstadoInvitacion.RECHAZADO.value, idInvitation)
+        )
         self.con.commit()

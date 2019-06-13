@@ -16,8 +16,9 @@ class Amigo(object):
 
 class SolicitudAmigo(object):
 
-  def __init__(self, id, nombres, apellidos, sexo, fechaNacimiento, foto):
-    self.id = id
+  def __init__(self, idInvitacion, idUsuario, nombres, apellidos, sexo, fechaNacimiento, foto):
+    self.idInvitacion = idInvitacion
+    self.idUsuario = idUsuario
     self.nombresCompletos = nombres + " " + apellidos
     self.nombres = nombres
     self.apellidos = apellidos
