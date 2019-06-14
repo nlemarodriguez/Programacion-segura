@@ -9,21 +9,21 @@
         <div class="col-lg-6">
             <input class="form-control mr-sm-2" style="width:100%" type="search" name="friend" placeholder="Buscar amigos ..." aria-label="Search">
         </div>
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> Buscar</button>
     </form>
     <ul class="navbar-nav mr-auto">
       <li>
-        <a class="btn btn-warning" href="/requests" data-toggle="tooltip" title="Solicitudes de amistad pendientes!">Solicitudes<span class="badge badge-pill badge-light ml-1">{{session['request_number']}}</span></a>
+        <a class="btn btn-warning" href="/requests" data-toggle="tooltip" title="Solicitudes de amistad pendientes!"><i class="fas fa-user-friends"></i><span class="badge badge-pill badge-light ml-1">{{session['request_number']}}</span></a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Menú
+          <i class="fas fa-ellipsis-v"></i> Menú
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/profile?user={{session['user_logged']}}">Perfil</a>
-          <a class="dropdown-item" href="/editarDatos">Editar Datos</a>
+          <a class="dropdown-item" href="/profile?user={{session['user_logged']}}"><i class="fas fa-user"></i> Perfil</a>
+          <a class="dropdown-item" href="/editarDatos"><i class="fas fa-user-edit"></i> Editar Datos</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="/">Cerrar Sesión</a>
+          <a class="dropdown-item" href="/"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
         </div>
       </li>
     </ul>

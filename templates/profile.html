@@ -75,7 +75,7 @@
 
                                 <div class="d-flex justify-content-end">
 
-                                    <button type="submit" class="btn btn-primary btn-sm ">Publicar</button>
+                                    <button type="submit" class="btn btn-primary btn-sm ">Publicar <i class="far fa-comment-alt"></i></button>
                                 </div>
                             </form>
                         </div>
@@ -102,13 +102,13 @@
                                                 <div class="d-flex justify-content-end">
                                                     {% if propio_perfil %}
                                                         <span><a
-                                                                href="/delete_commmet/{{ c.id }}">Eliminar | </a></span>
+                                                                href="/delete_commmet/{{ c.id }}">Eliminar <i class="fas fa-ban"></i> | </a></span>
                                                     {% endif %}
 
                                                     <span>
                                                     <a class="" role="button" data-toggle="collapse"
                                                        href="#replyCommentT{{ c.id }}" aria-expanded="false"
-                                                       aria-controls="collapseExample"> Responder</a>
+                                                       aria-controls="collapseExample"> Responder <i class="fas fa-reply"></i></a>
                                                     </span>
 
                                                 </div>
@@ -143,11 +143,11 @@
                                                 <div class="d-flex justify-content-end">
                                                     {% if propio_perfil %}
                                                         <span><a
-                                                                href="/delete_commmet/{{ c.id }}">Eliminar | </a></span>
+                                                                href="/delete_commmet/{{ c.id }}">Eliminar <i class="fas fa-ban"></i> | </a></span>
                                                     {% endif %}
                                                     <span>
                                         <a class="" role="button" data-toggle="collapse" href="#replyCommentT{{ c.id }}"
-                                           aria-expanded="false" aria-controls="collapseExample"> Responder</a>
+                                           aria-expanded="false" aria-controls="collapseExample"> Responder <i class="fas fa-reply"></i></a>
                                       </span>
                                                 </div>
                                                 <div class="collapse" id="replyCommentT{{ c.id }}">
