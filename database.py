@@ -1,6 +1,6 @@
 from enums import EstadoInvitacion
-from models import Amigo, SolicitudAmigo
-import pymysql
+from models import Amigo, SolicitudAmigo, Comentario
+import pymysql, api
 
 
 class Database:
@@ -28,7 +28,13 @@ class Database:
             'SELECT c.id, c.texto, c.fecha, u_postea.nombres, u_postea.apellidos, u_postea.foto, u_postea.id u_postea  from usuario u, usuario u_postea, comentario c where c.idusuario_comenta = u.id and '
             'c.idusuario_postea = u_postea.id and u.id = %s order by c.fecha desc', id)
         result = self.cur.fetchall()
-        return result
+        comentarios = []
+        for row in result:
+            c = Comentario(row['id'], row['texto'], row['fecha'], row['nombres'], row['apellidos'], row['foto'], row['u_postea'], api.pretty_date(row['fecha']))
+            comentarios.append(c)
+        print('comentarios......')
+        print(comentarios[0])
+        return comentarios
 
     def insert_post(self, texto, idusuario_postea, idusuario_comenta):
         self.cur.execute("INSERT INTO comentario (texto, idusuario_postea, idusuario_comenta) VALUES (%s,%s,%s)",
@@ -79,7 +85,9 @@ class Database:
         self.con.commit()
 
     def get_request_number(self, idUsuario):
-        self.cur.execute('SELECT count(*) as total from invitacion i where idusuario_invitado = %s', idUsuario)
+        self.cur.execute('SELECT count(*) as total from invitacion i where i.idusuario_invitado = %s and i.estado =  %s',
+                         (idUsuario, EstadoInvitacion.PENDIENTE.value)
+        )
         result = self.cur.fetchone()
         return result
 

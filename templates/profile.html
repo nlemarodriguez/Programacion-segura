@@ -74,7 +74,8 @@
                                 </div>
 
                                 <div class="d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-primary btn-sm ">Publicar</button>
+
+                                    <button type="submit" class="btn btn-primary btn-sm ">Publicar <i class="far fa-comment-alt"></i></button>
                                 </div>
                             </form>
                         </div>
@@ -92,7 +93,7 @@
                                 <img src="{{ c.foto }}" width="36" height="36" class="rounded-circle mr-2">
                                 {% if c.u_postea == user.id %}
                                     <div class="media-body">
-                                        <small class="float-right text-navy">5m ago</small>
+                                        <small class="float-right text-navy">{{ c.pretty_date }}</small>
                                         <strong>{{ c.nombres }} {{ c.apellidos }}</strong> {{ c.texto }}
                                         <br>
                                         <small class="text-muted">{{ c.fecha }}</small>
@@ -101,17 +102,17 @@
                                                 <div class="d-flex justify-content-end">
                                                     {% if propio_perfil %}
                                                         <span><a
-                                                                href="/delete_commmet/{{ c.id }}">Eliminar | </a></span>
+                                                                href="/delete_commmet/{{ c.id }}">Eliminar <i class="fas fa-ban"></i> | </a></span>
                                                     {% endif %}
 
                                                     <span>
                                                     <a class="" role="button" data-toggle="collapse"
                                                        href="#replyCommentT{{ c.id }}" aria-expanded="false"
-                                                       aria-controls="collapseExample"> Responder</a>
+                                                       aria-controls="collapseExample"> Responder <i class="fas fa-reply"></i></a>
                                                     </span>
 
                                                 </div>
-                                                <div class="collapse" id="replyCommentT">
+                                                <div class="collapse" id="replyCommentT{{ c.id }}">
                                                     <form action="/reply_comment/{{ c.id }}" method="POST">
                                                         <div class="form-group">
                                                         <textarea name="comment" placeholder="Tu comentario ..."
@@ -129,7 +130,7 @@
                                     </div>
                                 {% else %}
                                     <div class="media-body">
-                                        <small class="float-right text-navy">30m ago</small>
+                                        <small class="float-right text-navy">{{ c.pretty_date }}</small>
                                         <strong>{{ c.nombres }} {{ c.apellidos }}</strong> publicó en el perfil de
                                         <strong>{{ user.nombres }} {{ user.apellidos }}</strong>
                                         <br>
@@ -142,11 +143,11 @@
                                                 <div class="d-flex justify-content-end">
                                                     {% if propio_perfil %}
                                                         <span><a
-                                                                href="/delete_commmet/{{ c.id }}">Eliminar | </a></span>
+                                                                href="/delete_commmet/{{ c.id }}">Eliminar <i class="fas fa-ban"></i> | </a></span>
                                                     {% endif %}
                                                     <span>
                                         <a class="" role="button" data-toggle="collapse" href="#replyCommentT{{ c.id }}"
-                                           aria-expanded="false" aria-controls="collapseExample"> Responder</a>
+                                           aria-expanded="false" aria-controls="collapseExample"> Responder <i class="fas fa-reply"></i></a>
                                       </span>
                                                 </div>
                                                 <div class="collapse" id="replyCommentT{{ c.id }}">

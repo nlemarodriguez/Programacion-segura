@@ -37,14 +37,14 @@
                             <div class="col-md-3 col-sm-3">
                                 {% if friend.sonAmigos == False and friend.invitacionPendiente == False %}
                                 <form action="/invite/{{ friend.id }}" method="post">
-                                    <button class="btn btn-primary pull-right" style="margin-bottom:6px">Agregar Amigo</button>
+                                    <button class="btn btn-primary pull-right" style="margin-bottom:6px">Agregar <i class="fas fa-user-plus"></i> </button>
                                 </form>
                                 {% else %}
                                     {% if friend.invitacionPendiente %}
                                         <p class="text-danger">Invitación Pendiente</p>
                                     {% endif %}
                                 {% endif %}
-                                <a class="btn btn-success pull-right" href="/profile?user={{ friend.id }}">Ver Perfil</a>
+                                <a class="btn btn-success pull-right" href="/profile?user={{ friend.id }}">Ver Perfil <i class="fas fa-user-circle"></i></a>
                             </div>
                         </div>
                     </div>
