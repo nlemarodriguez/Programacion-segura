@@ -28,15 +28,17 @@
                         </div>
                         <div class="form-group">
                             <label>Nombres</label>
-                            <input class="form-control" required type="text" name="first_name" pattern="[A-Za-z]"
-                                   size="40" maxlength="40"  value={{ datosUsuario.nombres }}>
+                            <input class="form-control" required type="text" name="first_name"
+                                   pattern="([^\s][a-zA-Z\s]+)"
+                                   size="40" maxlength="40" value={{ datosUsuario.nombres }}>
                             <div class="invalid-feedback">
                                 Nombre(s) requerido(s)
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Apellidos</label>
-                            <input class="form-control" required type="text" name="last_name" pattern="[A-Za-z]"
+                            <input class="form-control" required type="text" name="last_name"
+                                   pattern="([^\s][a-zA-Z\s]+)"
                                    size="40" maxlength="40" value={{ datosUsuario.apellidos }}>
                             <div class="invalid-feedback">
                                 Apellidos(s) requerido(s)
@@ -82,7 +84,8 @@
                         </div>
 
                         <div class="text-center mt-3">
-                            <button type="submit" class="btn btn-primary" id="btn_edit">Editar <i class="fa fa-edit"></i></button>
+                            <button type="submit" class="btn btn-primary" id="btn_edit">Editar <i
+                                    class="fa fa-edit"></i></button>
                         </div>
                     </form>
 
