@@ -28,15 +28,15 @@
                         </div>
                         <div class="form-group">
                             <label>Nombres</label>
-                            <input class="form-control" required type="text" name="first_name"
-                                   size="40" maxlength="40" value={{ datosUsuario.nombres }}>
+                            <input class="form-control" required type="text" name="first_name" pattern="[A-Za-z]"
+                                   size="40" maxlength="40"  value={{ datosUsuario.nombres }}>
                             <div class="invalid-feedback">
                                 Nombre(s) requerido(s)
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Apellidos</label>
-                            <input class="form-control" required type="text" name="last_name"
+                            <input class="form-control" required type="text" name="last_name" pattern="[A-Za-z]"
                                    size="40" maxlength="40" value={{ datosUsuario.apellidos }}>
                             <div class="invalid-feedback">
                                 Apellidos(s) requerido(s)
