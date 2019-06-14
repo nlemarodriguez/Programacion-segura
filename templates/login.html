@@ -10,8 +10,10 @@
     <title></title>
     <link rel="stylesheet" type="text/css" href="/static/css/login.css">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="{{url_for('static', filename='fontawesome/css/all.css')}}" >
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 </head>
 <body class="fondo">
 
@@ -50,7 +52,7 @@
                                 {#<div class="forgot">
                                     <a href="reset.html">¿Olvidó su contraseña?</a>
                                 </div>#}
-                                <button type="submit" class="btn btn-primary mb-1">Login</button>
+                                <button type="submit" class="btn btn-primary mb-1">Login <i class="fas fa-sign-in-alt"></i></button>
                                 <div class="my-2">
                                     <a href="/registro">Registrarse</a>
                                 </div>

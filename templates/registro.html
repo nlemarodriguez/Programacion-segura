@@ -10,6 +10,7 @@
     <title></title>
     <link rel="stylesheet" type="text/css" href="/static/css/registro.css">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="{{url_for('static', filename='fontawesome/css/all.css')}}" >
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <style>
@@ -53,18 +54,30 @@
                 <div class="form-group">
                     <label>Nombres</label>
                     <input class="form-control" required type="text" name="first_name" size="40" maxlength="40">
+                    <div class="invalid-feedback">
+                        Nombre(s) requerido(s)
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Apellidos</label>
                     <input class="form-control" required type="text" name="last_name" size="40" maxlength="40">
+                    <div class="invalid-feedback">
+                        Apellido(s) requerido(s)
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Email</label>
                     <input class="form-control" required type="email" name="email" size="40" maxlength="40">
+                    <div class="invalid-feedback">
+                        Email requerido
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label>Password</label>
+                    <label>Contraseña</label>
                     <input class="form-control" required type="password" name="password" size="40" maxlength="40">
+                    <div class="invalid-feedback">
+                        Contraseña requerida
+                    </div>
                 </div>
                 <div class="form-group">
                     <div class="custom-control custom-radio custom-control-inline">
@@ -78,8 +91,8 @@
                     </div>
                 </div>
                 <div class="text-center mt-3">
-                    <button type="submit" class="btn btn-primary">Registrar</button>
-                    <a class="btn btn-info" href="/">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Registrar <i class="fas fa-user-plus"></i></button>
+                    <a class="btn btn-info" href="/">Cancelar  <i class="fas fa-ban"></i></a>
                 </div>
             </form>
         </div>
