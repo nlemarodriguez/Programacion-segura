@@ -32,8 +32,6 @@ class Database:
         for row in result:
             c = Comentario(row['id'], row['texto'], row['fecha'], row['nombres'], row['apellidos'], row['foto'], row['u_postea'], api.pretty_date(row['fecha']))
             comentarios.append(c)
-        print('comentarios......')
-        print(comentarios[0])
         return comentarios
 
     def insert_post(self, texto, idusuario_postea, idusuario_comenta):
@@ -67,7 +65,6 @@ class Database:
     def verificar_correo(self, email):
         self.cur.execute('SELECT correo from usuario where correo = %s', email)
         result = self.cur.fetchall()
-        print(result)
         if len(result) == 0:
             return False
         else:
