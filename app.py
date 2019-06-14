@@ -111,8 +111,8 @@ def reister():
             else:
                 photo = URL_FOLDER + 'man-img.png'
 
-        existeCorreo = db.verificar_correo(email)
-        if existeCorreo:
+        existe_correo = db.verificar_correo(email)
+        if existe_correo:
             flash('Usuario ya existe')
             return render_template('registro.html')
         else:
@@ -153,17 +153,17 @@ def reply_comment(id_comentario_padre):
         return redirect(request.referrer)
 
 @app.route('/editarDatos')
-def editarDatos():
-    idUser = session.get('user_logged')
-    datosUsuario = db.infouser_by_id(idUser)[0]
-    return render_template('editUser.html', datosUsuario=datosUsuario)
+def editar_datos():
+    id_user = session.get('user_logged')
+    datos_usuario = db.infouser_by_id(id_user)[0]
+    return render_template('editUser.html', datosUsuario=datos_usuario)
 
         
 @app.route('/editar_usuario', methods=['POST'])
-def editarUsuario():
+def editar_usuario():
     if request.method == 'POST':
-        idUser = session.get('user_logged')
-        datosUsuario = db.infouser_by_id(idUser)[0]
+        id_user = session.get('user_logged')
+        datos_usuario = db.infouser_by_id(id_user)[0]
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         email = request.form['email']
@@ -176,15 +176,15 @@ def editarUsuario():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             photo = URL_FOLDER + file.filename
         else:
-            photo = datosUsuario['foto']
+            photo = datos_usuario['foto']
 
-        password = datosUsuario['password']
+        password = datos_usuario['password']
         if request.form['password'] != '':
             password = request.form['password']
 
-        db.editar_usuario(first_name, last_name, email, password, gender, photo, idUser)
-        flash('Se editaron los con éxito')
-        return redirect(url_for('editarDatos'))
+        db.editar_usuario(first_name, last_name, email, password, gender, photo, id_user)
+        flash('Se editaron los datos con éxito')
+        return redirect(url_for('editar_datos'))
 
 @app.route('/acceptFriend/<idInvitation>', methods=['POST'])
 def accept_friend(idInvitation):

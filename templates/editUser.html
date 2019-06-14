@@ -19,7 +19,6 @@
             <div class="card">
                 <div class="card-body">
                     <form action="/editar_usuario" method="POST" enctype="multipart/form-data">
-
                         <div class="form-group">
                             <label for="list">Imagen de perfil</label>
                             <output id="list"></output>
@@ -29,30 +28,39 @@
                         <div class="form-group">
                             <label>Nombres</label>
                             <input class="form-control" required type="text" name="first_name"
-                                   value={{ datosUsuario.nombres }}>
+                                   size="40" maxlength="40" value={{ datosUsuario.nombres }}>
                         </div>
                         <div class="form-group">
                             <label>Apellidos</label>
                             <input class="form-control" required type="text" name="last_name"
-                                   value={{ datosUsuario.apellidos }}>
+                                   size="40" maxlength="40" value={{ datosUsuario.apellidos }}>
                         </div>
                         <div class="form-group">
                             <label>Email</label>
                             <input class="form-control" required type="email" name="email"
-                                   value={{ datosUsuario.correo }}>
+                                   size="40" maxlength="40" value={{ datosUsuario.correo }}>
                         </div>
                         <div class="form-group">
                             <label>Password</label>
-                            <input class="form-control" type="password" name="password">
+                            <input class="form-control" type="password" name="password" size="40" maxlength="40">
                         </div>
                         <div class="form-group">
                             <div>
-                                <label class="radio-container">Femenino
-                                    <input type="radio" checked="checked" value="F" name="gender">
-                                </label>
-                                <label class="radio-container">Masculino
-                                    <input type="radio" checked="checked" value="M" name="gender">
-                                </label>
+                                {% if datosUsuario.sexo == 'F' %}
+                                    <label class="radio-container">Femenino
+                                        <input type="radio" checked="checked" value="F" name="gender">
+                                    </label>
+                                    <label class="radio-container">Masculino
+                                        <input type="radio" value="M" name="gender">
+                                    </label>
+                                {% else %}
+                                    <label class="radio-container">Femenino
+                                        <input type="radio" value="F" name="gender">
+                                    </label>
+                                    <label class="radio-container">Masculino
+                                        <input type="radio" checked="checked" value="M" name="gender">
+                                    </label>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="form-group">
@@ -71,6 +79,36 @@
 
         {% endif %}
     </div>
+
+    <script>
+    function archivo(evt) {
+        var files = evt.target.files; // FileList object
+
+        // Obtenemos la imagen del campo "file".
+        for (var i = 0, f; f = files[i]; i++) {
+            //Solo admitimos imágenes.
+            if (!f.type.match('image.*')) {
+                continue;
+            }
+
+            var reader = new FileReader();
+
+            reader.onload = (function (theFile) {
+                return function (e) {
+                    // Insertamos la imagen
+                    document.getElementById("list").innerHTML = ['<img class="foto_perfil_busqueda" src="', e.target.result, '" title="', escape(theFile.name), '"/>'].join('');
+                };
+            })(f);
+
+            reader.readAsDataURL(f);
+        }
+    }
+    var url_img = '{{ datosUsuario.foto }}'
+    var html_to_insert = '<img class="foto_perfil_busqueda" src="'.concat(url_img.toString()).concat('"/>');
+    document.getElementById('list').insertAdjacentHTML('afterbegin', html_to_insert);
+    document.getElementById('files').addEventListener('change', archivo, false);
+</script>
+
 
 {% endblock %}
 
