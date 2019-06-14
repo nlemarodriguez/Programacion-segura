@@ -85,7 +85,9 @@ class Database:
         self.con.commit()
 
     def get_request_number(self, idUsuario):
-        self.cur.execute('SELECT count(*) as total from invitacion i where idusuario_invitado = %s', idUsuario)
+        self.cur.execute('SELECT count(*) as total from invitacion i where i.idusuario_invitado = %s and i.estado =  %s',
+                         (idUsuario, EstadoInvitacion.PENDIENTE.value)
+        )
         result = self.cur.fetchone()
         return result
 

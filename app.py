@@ -33,6 +33,9 @@ def login():
         password = request.form['password']
         userid = db.login(email, password)
         if userid:
+            requestNumber = db.get_request_number(userid[0]['id'])['total']
+            print(requestNumber)
+            session['request_number'] = requestNumber
             session['user_logged'] = userid[0]['id']
             return redirect(url_for('profile', user=userid[0]['id']))
         else:
@@ -191,6 +194,7 @@ def accept_friend(idInvitation):
     if request.method == 'POST':
         try:
             db.accept_friend(idInvitation)
+            session['request_number'] = session['request_number'] - 1
             flash('Invitación aceptada exitosamente!', category='success')
         except:
             flash('Ha ocurrido un error al aceptar la invitación!', category='error')
@@ -201,6 +205,7 @@ def refuse_friend(idInvitation):
     if request.method == 'POST':
         try:
             db.refuse_friend(idInvitation)
+            session['request_number'] = session['request_number'] - 1
             flash('Invitación de amistad rechazada!', category='warning')
         except:
             flash('Ha ocurrido un error al rechazar la invitación!', category='error')
