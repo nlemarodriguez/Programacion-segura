@@ -18,7 +18,8 @@
         {% if datosUsuario %}
             <div class="card">
                 <div class="card-body">
-                    <form id="form_edit_user" action="/editar_usuario" method="POST" enctype="multipart/form-data">
+                    <form id="form_edit_user" class="needs-validation" action="/editar_usuario" method="POST"
+                          enctype="multipart/form-data" novalidate>
                         <div class="form-group text-center">
                             <label for="list">Imagen de perfil</label><br>
                             <output id="list"></output>
@@ -47,21 +48,25 @@
                         <div class="form-group">
                             {% if datosUsuario.sexo == 'F' %}
                                 <div class="custom-control custom-radio custom-control-inline">
-                                  <input class="custom-control-input" type="radio" name="gender" id="genderF" value="F" checked="checked">
-                                  <label class="custom-control-label" for="genderF">Femenino</label>
+                                    <input class="custom-control-input" type="radio" name="gender" id="genderF"
+                                           value="F" checked="checked">
+                                    <label class="custom-control-label" for="genderF">Femenino</label>
                                 </div>
                                 <div class="custom-control custom-radio custom-control-inline">
-                                  <input class="custom-control-input" type="radio" name="gender" id="genderM" value="M">
-                                  <label class="custom-control-label" for="genderM">Masculino</label>
+                                    <input class="custom-control-input" type="radio" name="gender" id="genderM"
+                                           value="M">
+                                    <label class="custom-control-label" for="genderM">Masculino</label>
                                 </div>
                             {% else %}
                                 <div class="custom-control custom-radio custom-control-inline">
-                                  <input class="custom-control-input" type="radio" name="gender" id="genderF" value="F">
-                                  <label class="custom-control-label" for="genderF">Femenino</label>
+                                    <input class="custom-control-input" type="radio" name="gender" id="genderF"
+                                           value="F">
+                                    <label class="custom-control-label" for="genderF">Femenino</label>
                                 </div>
                                 <div class="custom-control custom-radio custom-control-inline">
-                                  <input class="custom-control-input" type="radio" name="gender" id="genderM" value="M" checked="checked">
-                                  <label class="custom-control-label" for="genderM">Masculino</label>
+                                    <input class="custom-control-input" type="radio" name="gender" id="genderM"
+                                           value="M" checked="checked">
+                                    <label class="custom-control-label" for="genderM">Masculino</label>
                                 </div>
                             {% endif %}
                         </div>
@@ -83,41 +88,61 @@
     </div>
 
     <script>
-    function archivo(evt) {
-        var files = evt.target.files; // FileList object
+        function archivo(evt) {
+            var files = evt.target.files; // FileList object
 
-        // Obtenemos la imagen del campo "file".
-        for (var i = 0, f; f = files[i]; i++) {
-            //Solo admitimos imágenes.
-            if (!f.type.match('image.*')) {
-                continue;
+            // Obtenemos la imagen del campo "file".
+            for (var i = 0, f; f = files[i]; i++) {
+                //Solo admitimos imágenes.
+                if (!f.type.match('image.*')) {
+                    continue;
+                }
+
+                var reader = new FileReader();
+
+                reader.onload = (function (theFile) {
+                    return function (e) {
+                        // Insertamos la imagen
+                        document.getElementById("list").innerHTML = ['<img class=" img-fluid foto_perfil" width="128px" height="128px" src="', e.target.result, '" title="', escape(theFile.name), '"/>'].join('');
+                    };
+                })(f);
+
+                reader.readAsDataURL(f);
             }
-
-            var reader = new FileReader();
-
-            reader.onload = (function (theFile) {
-                return function (e) {
-                    // Insertamos la imagen
-                    document.getElementById("list").innerHTML = ['<img class=" img-fluid foto_perfil" width="128px" height="128px" src="', e.target.result, '" title="', escape(theFile.name), '"/>'].join('');
-                };
-            })(f);
-
-            reader.readAsDataURL(f);
         }
-    }
-    var url_img = '{{ datosUsuario.foto }}'
-    var html_to_insert = '<img class="img-fluid foto_perfil" width="128px" height="128px" src="'.concat(url_img.toString()).concat('"/>');
-    document.getElementById('list').insertAdjacentHTML('afterbegin', html_to_insert);
-    document.getElementById('files').addEventListener('change', archivo, false);
 
-    {# $("#btn_edit").on('click', function(e){
-            e.preventDefault();
-            $("#form_edit_user")[0].reset;
-        });
-    #}
+        var url_img = '{{ datosUsuario.foto }}'
+        var html_to_insert = '<img class="img-fluid foto_perfil" width="128px" height="128px" src="'.concat(url_img.toString()).concat('"/>');
+        document.getElementById('list').insertAdjacentHTML('afterbegin', html_to_insert);
+        document.getElementById('files').addEventListener('change', archivo, false);
 
-</script>
+        {# $("#btn_edit").on('click', function(e){
+                e.preventDefault();
+                $("#form_edit_user")[0].reset;
+            });
+        #}
 
+    </script>
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
 
 {% endblock %}
 
