@@ -140,10 +140,10 @@ class Database:
         )
         self.con.commit()
 
-    def editar_usuario(self, first_name, last_name, email, password, gender, photo, id):
+    def editar_usuario(self, first_name, last_name, email, gender, photo, fecha_nac, id):
         self.cur.execute(
-            'UPDATE usuario SET nombres = %s, apellidos = %s, correo = %s, password = %s, sexo = %s , foto = %s WHERE id = %s',
-            (first_name, last_name, email, password, gender, photo, id))
+            'UPDATE usuario SET nombres = %s, apellidos = %s, correo = %s, sexo = %s , foto = %s, fechaNacimiento = %s WHERE id = %s',
+            (first_name, last_name, email, gender, photo, fecha_nac, id))
         self.con.commit()
 
     def accept_friend(self, idInvitation):
@@ -158,4 +158,9 @@ class Database:
             'UPDATE invitacion SET estado = %s WHERE id = %s',
             (EstadoInvitacion.RECHAZADO.value, idInvitation)
         )
+        self.con.commit()
+
+    def editar_contrasena(self, password, id):
+        self.cur.execute(
+            'UPDATE usuario SET password = %s WHERE id = %s', (password, id))
         self.con.commit()

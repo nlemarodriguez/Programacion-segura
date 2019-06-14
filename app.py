@@ -159,7 +159,7 @@ def reply_comment(id_comentario_padre):
 def editar_datos():
     id_user = session.get('user_logged')
     datos_usuario = db.infouser_by_id(id_user)[0]
-    return render_template('editUser.html', datosUsuario=datos_usuario)
+    return render_template('edit_user.html', datosUsuario=datos_usuario)
 
         
 @app.route('/editar_usuario', methods=['POST'])
@@ -171,6 +171,7 @@ def editar_usuario():
         last_name = request.form['last_name']
         email = request.form['email']
         gender = request.form['gender']
+        fecha_nac = request.form['fechaNac']
         file = request.files['files[]']
         # if user does not select file, browser also
         # submit an empty part without filename
@@ -181,11 +182,7 @@ def editar_usuario():
         else:
             photo = datos_usuario['foto']
 
-        password = datos_usuario['password']
-        if request.form['password'] != '':
-            password = request.form['password']
-
-        db.editar_usuario(first_name, last_name, email, password, gender, photo, id_user)
+        db.editar_usuario(first_name, last_name, email, gender, photo, fecha_nac, id_user)
         flash('Se editaron los datos con éxito')
         return redirect(url_for('editar_datos'))
 
@@ -210,6 +207,32 @@ def refuse_friend(idInvitation):
         except:
             flash('Ha ocurrido un error al rechazar la invitación!', category='error')
         return redirect(request.referrer)
+
+@app.route('/editarPassword')
+def editar_password():
+    id_user = session.get('user_logged')
+    return render_template('edit_password.html', id_user=id_user)
+
+@app.route('/editar_pass', methods=['POST'])
+def editar_pass():
+    if request.method == 'POST':
+        id_user = session.get('user_logged')
+        datos_usuario = db.infouser_by_id(id_user)[0]
+        password = datos_usuario['password']
+        password_new = request.form['password_nueva']
+        password_repeat = request.form['password_repetida']
+        if request.form['password'] == password:
+            if password_new == password_repeat:
+                db.editar_contrasena(password_new, id_user)
+                flash('El cambio de contraseña se realizó con éxito')
+                return redirect(request.referrer)
+            else:
+                flash('Las contraseñas no coinciden')
+                return redirect(request.referrer)
+        else:
+            flash('Las contraseñas no coinciden')
+            return redirect(request.referrer)
+
 
 if __name__ == '__main__':
     app.run(port=3000, debug=True)
