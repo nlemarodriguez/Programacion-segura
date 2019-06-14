@@ -66,13 +66,13 @@
                     <input class="form-control" required type="password" name="password" size="40" maxlength="40">
                 </div>
                 <div class="form-group">
-                    <div>
-                        <label class="radio-container">Femenino
-                            <input type="radio" checked="checked" value="F" name="gender">
-                        </label>
-                        <label class="radio-container">Masculino
-                            <input type="radio" checked="checked" value="M" name="gender">
-                        </label>
+                    <div class="custom-control custom-radio custom-control-inline">
+                      <input class="custom-control-input" type="radio" name="gender" id="genderF" value="F" checked="checked">
+                      <label class="custom-control-label" for="genderF">Femenino</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                      <input class="custom-control-input" type="radio" name="gender" id="genderM" value="M">
+                      <label class="custom-control-label" for="genderM">Masculino</label>
                     </div>
                 </div>
                 <div class="text-center mt-3">

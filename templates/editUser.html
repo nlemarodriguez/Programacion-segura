@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
-    <div class="container">
+    <div class="container col-md-6">
         <h1 class="h3 mb-3">Editar datos</h1>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -18,9 +18,9 @@
         {% if datosUsuario %}
             <div class="card">
                 <div class="card-body">
-                    <form action="/editar_usuario" method="POST" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="list">Imagen de perfil</label>
+                    <form id="form_edit_user" action="/editar_usuario" method="POST" enctype="multipart/form-data">
+                        <div class="form-group text-center">
+                            <label for="list">Imagen de perfil</label><br>
                             <output id="list"></output>
                             <input type="file" class="form-control-file" id="files" name="files[]"/>
                             <br/>
@@ -45,23 +45,25 @@
                             <input class="form-control" type="password" name="password" size="40" maxlength="40">
                         </div>
                         <div class="form-group">
-                            <div>
-                                {% if datosUsuario.sexo == 'F' %}
-                                    <label class="radio-container">Femenino
-                                        <input type="radio" checked="checked" value="F" name="gender">
-                                    </label>
-                                    <label class="radio-container">Masculino
-                                        <input type="radio" value="M" name="gender">
-                                    </label>
-                                {% else %}
-                                    <label class="radio-container">Femenino
-                                        <input type="radio" value="F" name="gender">
-                                    </label>
-                                    <label class="radio-container">Masculino
-                                        <input type="radio" checked="checked" value="M" name="gender">
-                                    </label>
-                                {% endif %}
-                            </div>
+                            {% if datosUsuario.sexo == 'F' %}
+                                <div class="custom-control custom-radio custom-control-inline">
+                                  <input class="custom-control-input" type="radio" name="gender" id="genderF" value="F" checked="checked">
+                                  <label class="custom-control-label" for="genderF">Femenino</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                  <input class="custom-control-input" type="radio" name="gender" id="genderM" value="M">
+                                  <label class="custom-control-label" for="genderM">Masculino</label>
+                                </div>
+                            {% else %}
+                                <div class="custom-control custom-radio custom-control-inline">
+                                  <input class="custom-control-input" type="radio" name="gender" id="genderF" value="F">
+                                  <label class="custom-control-label" for="genderF">Femenino</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                  <input class="custom-control-input" type="radio" name="gender" id="genderM" value="M" checked="checked">
+                                  <label class="custom-control-label" for="genderM">Masculino</label>
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="form-group">
                             <label>Fecha de nacimiento</label>
@@ -70,7 +72,7 @@
                         </div>
 
                         <div class="text-center mt-3">
-                            <button type="submit" class="btn btn-primary">Editar</button>
+                            <button type="submit" class="btn btn-primary" id="btn_edit">Editar</button>
                         </div>
                     </form>
 
@@ -96,7 +98,7 @@
             reader.onload = (function (theFile) {
                 return function (e) {
                     // Insertamos la imagen
-                    document.getElementById("list").innerHTML = ['<img class="foto_perfil_busqueda" src="', e.target.result, '" title="', escape(theFile.name), '"/>'].join('');
+                    document.getElementById("list").innerHTML = ['<img class=" img-fluid foto_perfil" width="128px" height="128px" src="', e.target.result, '" title="', escape(theFile.name), '"/>'].join('');
                 };
             })(f);
 
@@ -104,9 +106,16 @@
         }
     }
     var url_img = '{{ datosUsuario.foto }}'
-    var html_to_insert = '<img class="foto_perfil_busqueda" src="'.concat(url_img.toString()).concat('"/>');
+    var html_to_insert = '<img class="img-fluid foto_perfil" width="128px" height="128px" src="'.concat(url_img.toString()).concat('"/>');
     document.getElementById('list').insertAdjacentHTML('afterbegin', html_to_insert);
     document.getElementById('files').addEventListener('change', archivo, false);
+
+    {# $("#btn_edit").on('click', function(e){
+            e.preventDefault();
+            $("#form_edit_user")[0].reset;
+        });
+    #}
+
 </script>
 
 
