@@ -30,7 +30,7 @@
                             <label>Nombres</label>
                             <input class="form-control" required type="text" name="first_name"
                                    pattern="([^\s][a-zA-Z\s]+)"
-                                   size="40" maxlength="40" value={{ datosUsuario.nombres }}>
+                                   size="40" maxlength="40" value="{{ datosUsuario.nombres }}">
                             <div class="invalid-feedback">
                                 Nombre(s) requerido(s)
                             </div>
@@ -39,7 +39,7 @@
                             <label>Apellidos</label>
                             <input class="form-control" required type="text" name="last_name"
                                    pattern="([^\s][a-zA-Z\s]+)"
-                                   size="40" maxlength="40" value={{ datosUsuario.apellidos }}>
+                                   size="40" maxlength="40" value="{{ datosUsuario.apellidos }}">
                             <div class="invalid-feedback">
                                 Apellidos(s) requerido(s)
                             </div>
@@ -47,7 +47,7 @@
                         <div class="form-group">
                             <label>Email</label>
                             <input class="form-control" required type="email" name="email"
-                                   size="40" maxlength="40" value={{ datosUsuario.correo }}>
+                                   size="40" maxlength="40" value="{{ datosUsuario.correo }}">
                             <div class="invalid-feedback">
                                 Email requerido
                             </div>
