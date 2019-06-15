@@ -104,3 +104,38 @@ img.profile-photo-lg{
     height: 200px;
     border: 2px solid black;
 }
+
+.imagen_muro {
+    object-fit: cover;
+    width: 200px;
+    height: 200px;
+}
+
+.image-preview-input, .image-preview-clear {
+    position: relative;
+	overflow: hidden;
+	margin: 0px;
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+.image-preview-input input[type=file] {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+	font-size: 20px;
+	cursor: pointer;
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+.image-preview-input-title {
+    margin-left:2px;
+}
+
+.input-group-btn {
+    position: relative;
+    font-size: 0;
+    white-space: nowrap;
+}

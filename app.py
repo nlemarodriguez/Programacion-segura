@@ -2,16 +2,20 @@ import os
 from flask import Flask, render_template, request, url_for, jsonify, flash, redirect, json, session
 from flask_bootstrap import Bootstrap
 from database import Database
+import uuid
 from enums import EstadoInvitacion
 
 URL_FOLDER = '/static/imagen_perfil/'
+URL_COMMENTS_FOLDER = '/static/imagen_comentarios/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(APP_ROOT, 'static', 'imagen_perfil')
+COMMENTS_UPLOAD_FOLDER = os.path.join(APP_ROOT, 'static', 'imagen_comentarios')
 
 def create_app():
     app = Flask(__name__)
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+    app.config['COMMENTS_UPLOAD_FOLDER'] = COMMENTS_UPLOAD_FOLDER
     Bootstrap(app)
     return app
 
@@ -77,10 +81,27 @@ def search():
 def post_comment(id):
     if request.method == 'POST':
         texto = request.form['texto_publicacion']
+        file = request.files['imagenComentario']
+        idImagen = None
+        if file.filename != '':
+            idImagen = save_comment_image(file)
         idusuario_postea = session.get('user_logged')
         idusuario_comenta = id
-        db.insert_post(texto, idusuario_postea, idusuario_comenta)
+        db.insert_post(texto, idusuario_postea, idusuario_comenta, idImagen)
         return redirect(url_for('profile', user=idusuario_comenta))
+
+def save_comment_image(file):
+    print(file)
+    oldFileName, fileExtension = file.filename.split('.')
+    fileName = str(uuid.uuid4()) + "." + fileExtension #Random IDs
+    # TODO Antes de guardar implementar filtro a imagen
+    file.save(os.path.join(app.config['COMMENTS_UPLOAD_FOLDER'], fileName))
+    imagenComentario = URL_COMMENTS_FOLDER + fileName
+    print(imagenComentario)
+    efectoImagen = request.form['efectoImagen']
+    print(efectoImagen)
+    idImagen = db.insert_imagen(efectoImagen, imagenComentario)
+    return idImagen
 
 
 @app.route('/registro')

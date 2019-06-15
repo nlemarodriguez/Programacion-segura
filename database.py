@@ -25,19 +25,27 @@ class Database:
 
     def wallposts_by_user(self, id):
         self.cur.execute(
-            'SELECT c.id, c.texto, c.fecha, u_postea.nombres, u_postea.apellidos, u_postea.foto, u_postea.id u_postea  from usuario u, usuario u_postea, comentario c where c.idusuario_comenta = u.id and '
+            'SELECT c.id, c.texto, c.fecha, u_postea.nombres, u_postea.apellidos, u_postea.foto, u_postea.id u_postea, im.imagen  from usuario u, usuario u_postea, comentario c left join imagen im on im.id=c.idimagen where c.idusuario_comenta = u.id and '
             'c.idusuario_postea = u_postea.id and u.id = %s order by c.fecha desc', id)
         result = self.cur.fetchall()
         comentarios = []
         for row in result:
-            c = Comentario(row['id'], row['texto'], row['fecha'], row['nombres'], row['apellidos'], row['foto'], row['u_postea'], api.pretty_date(row['fecha']))
+            c = Comentario(row['id'], row['texto'], row['fecha'], row['nombres'], row['apellidos'], row['foto'], row['u_postea'], api.pretty_date(row['fecha']), row['imagen'])
             comentarios.append(c)
         return comentarios
 
-    def insert_post(self, texto, idusuario_postea, idusuario_comenta):
-        self.cur.execute("INSERT INTO comentario (texto, idusuario_postea, idusuario_comenta) VALUES (%s,%s,%s)",
-                         (texto, idusuario_postea, idusuario_comenta))
+    def insert_post(self, texto, idusuario_postea, idusuario_comenta, idImagen):
+        self.cur.execute(
+            "INSERT INTO comentario (texto, idusuario_postea, idusuario_comenta, idimagen) VALUES (%s,%s,%s,%s)",
+            (texto, idusuario_postea, idusuario_comenta, idImagen))
         self.con.commit()
+
+    def insert_imagen(self, idFiltro, rutaImagen):
+        self.cur.execute("INSERT INTO imagen (idfiltro, imagen) VALUES (%s,%s)",
+                         (idFiltro, rutaImagen))
+        idImagen = self.cur.lastrowid
+        self.con.commit()
+        return idImagen
 
     def search_friends(self, idUser, friend):
         self.cur.execute('SELECT u.id, u.nombres, u.apellidos, u.sexo, u.fechaNacimiento, '

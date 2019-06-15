@@ -66,16 +66,40 @@
                             <h5 class="card-title mb-0">Nueva Publicación</h5>
                         </div>
                         <div class="card-body h-100">
-                            <form action="/post_comment/{{ user.id }}" method="POST">
+                            <form action="/post_comment/{{ user.id }}" method="POST" enctype="multipart/form-data">
                                 <div class="form-group">
                                 <textarea name="texto_publicacion" class="form-control rounded-1"
-                                          placeholder="Escribe un comentario ..." id="exampleFormControlTextarea1"
+                                          placeholder="Escribe un comentario ..." id="contenidoComentario"
                                           rows="2"></textarea>
                                 </div>
+                                <div class="row">
+                                    <div class="col-xs-12 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                                        <!-- image-preview-filename input [CUT FROM HERE]-->
+                                        <div class="input-group image-preview">
+                                            <input type="text" class="form-control image-preview-filename" disabled="disabled"> <!-- don't give a name === doesn't send on POST/GET -->
+                                            <span class="input-group-btn">
+                                                <!-- image-preview-clear button -->
+                                                <button type="button" class="btn btn-default image-preview-clear" style="display:none;">
+                                                    <i class="fas fa-minus-circle"></i> Limpiar
+                                                </button>
+                                                <!-- image-preview-input -->
+                                                <div class="btn btn-default image-preview-input">
+                                                    <span class="glyphicon glyphicon-folder-open"></span>
+                                                    <span class="image-preview-input-title fa fa-image"> Buscar</span>
+                                                    <input type="file" accept="image/png, image/jpeg, image/gif" name="imagenComentario" id="inptImagenComentario" /> <!-- rename it -->
+                                                </div>
+                                                <!-- Effects -->
+                                                <select class="form-control image-preview-effects" name="efectoImagen" id="slctEfectoImagen" style="display:none;">
+                                                  <option value="1">Blanco y negro</option>
+                                                  <option value="2">Foto a arte</option>
+                                                  <option value="3">Fondo de textura</option>
+                                                </select>
+                                            </span>
+                                        </div><!-- /input-group image-preview [TO HERE]-->
+                                    </div>
+                                <div class="col-md-6 d-flex justify-content-end">
 
-                                <div class="d-flex justify-content-end">
-
-                                    <button type="submit" class="btn btn-primary btn-sm ">Publicar <i class="far fa-comment-alt"></i></button>
+                                    <button type="submit" class="btn btn-primary btn-sm "><i class="fa fa-share"></i> Publicar</button>
                                 </div>
                             </form>
                         </div>
@@ -97,6 +121,10 @@
                                         <strong>{{ c.nombres }} {{ c.apellidos }}</strong> {{ c.texto }}
                                         <br>
                                         <small class="text-muted">{{ c.fecha }}</small>
+                                        <br>
+                                        {% if c.imagen %}
+                                            <img src="{{ c.imagen }}" class="img-fluid imagen_muro rounded mx-auto d-block" width="128" height="128">
+                                        {% endif %}
                                         {% if propio_perfil or estado_amistad == 2 %}
                                             <div class="comment-meta">
                                                 <div class="d-flex justify-content-end">
