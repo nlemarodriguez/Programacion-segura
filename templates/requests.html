@@ -24,7 +24,7 @@
             <div class="people-nearby">
                 {% if requests %}
                     {% for friend in requests %}
-                    <div class="nearby-user">
+                    <div class="nearby-user border border-info rounded">
                         <div class="row">
                             <div class="col-md-2 col-sm-2">
                                 <img src="{{ friend.foto }}" class="foto_perfil_busqueda" width="128" height="128">
@@ -33,6 +33,7 @@
                                 <h5 class="fiend-name">{{ friend.nombresCompletos }}</h5>
                                 <p><b>Fecha Nacimiento:</b> {{ friend.fechaNacimiento }}</p>
                                 <p><b>Sexo:</b> {{ friend.sexo }}</p>
+                                <button type="button" class="btn btn-warning btn-sm" disabled><i class="fas fa-clock"></i> Invitación pendiente</button>
                             </div>
                             <div class="col-md-3 col-sm-3">
                                 <form action="/acceptFriend/{{ friend.idInvitacion }}" method="post">
