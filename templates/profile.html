@@ -165,6 +165,10 @@
                                         <small class="text-muted">{{ c.fecha }}</small>
                                         <div class="border text-sm text-muted p-2 mt-1">
                                             {{ c.texto }}
+                                            {% if c.imagen %}
+                                                <br>
+                                                <img src="{{ c.imagen }}" class="img-fluid imagen_muro rounded mx-auto d-block" width="128" height="128">
+                                            {% endif %}
                                         </div>
                                         {% if propio_perfil or estado_amistad == 2 %}
                                             <div class="comment-meta">
