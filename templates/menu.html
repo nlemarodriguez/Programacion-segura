@@ -1,23 +1,29 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light navBarRedSocial">
-  <a class="navbar-brand" href="#">Red Social</a>
+<nav class="navbar navbar-expand-lg navbar-light border-bottom rounded-bottom bg-light navBarRedSocial">
+  <a class="navbar-brand" href="#"> Red Social <i class="">
+            <span class="badge badge-info" style="background-color: #ffc107; color:black">Programación Segura <i class="far fa-thumbs-up"></i></span>
+          </i></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <form class="form-inline my-2 my-lg-0 justify-content-end col-lg-8" action="/search" method="GET">
-        <div class="col-lg-6">
+        <div class="col-lg-6" style="padding: 0px;">
             <input class="form-control mr-sm-2" style="width:100%" type="search" name="friend" placeholder="Buscar amigos ..." aria-label="Search">
         </div>
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> Buscar</button>
+      <button class="btn btn-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> Buscar</button>
     </form>
     <ul class="navbar-nav mr-auto">
-      <li>
-        <a class="btn btn-warning" href="/requests" data-toggle="tooltip" title="Solicitudes de amistad pendientes!"><i class="fas fa-user-friends"></i><span class="badge badge-pill badge-light ml-1">{{session['request_number']}}</span></a>
+      <li class="nav-item">
+        <a class="nav-link" href="/requests" data-toggle="tooltip" title="Solicitudes de amistad pendientes">
+          <i class="fa fa-bell">
+            <span class="badge badge-info" style="background-color: #ffc107; color:black">{{session['request_number']}}</span>
+          </i>
+        </a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-ellipsis-v"></i> Menú
+          <i class="fas fa-bars"></i> Menú
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="/profile?user={{session['user_logged']}}"><i class="fas fa-user"></i> Perfil</a>

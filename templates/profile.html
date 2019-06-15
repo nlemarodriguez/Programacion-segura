@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="tab-pane fade in active show" id="profile-friends">
-                    <h4 class="m-t-0 m-b-20">Lista de amigos ({{ amigos|length }})</h4>
+                    <h4 class="m-t-0 m-b-20">Lista de amigos <small>({{ amigos|length }})</small></h4>
                     {% for amigo in amigos %}
                         <div class="row row-space-2">
                             <div class="col-md-12 m-b-2">
@@ -131,8 +131,7 @@
                                             <div class="comment-meta">
                                                 <div class="d-flex justify-content-end">
                                                     {% if propio_perfil %}
-                                                        <span><a
-                                                                href="/delete_commmet/{{ c.id }}">Eliminar <i class="fas fa-ban"></i> | </a></span>
+                                                        <span><a href="/delete_commmet/{{ c.id }}" style="margin: 0px 10px 0px 3px;">Eliminar <i class="fas fa-times"></i></a></span>
                                                     {% endif %}
 
                                                     <span>
@@ -176,8 +175,7 @@
                                             <div class="comment-meta">
                                                 <div class="d-flex justify-content-end">
                                                     {% if propio_perfil %}
-                                                        <span><a
-                                                                href="/delete_commmet/{{ c.id }}">Eliminar <i class="fas fa-ban"></i> | </a></span>
+                                                        <span><a href="/delete_commmet/{{ c.id }}" style="margin: 0px 10px 0px 3px;">Eliminar <i class="fas fa-times"></i></a></span>
                                                     {% endif %}
                                                     <span>
                                         <a class="" role="button" data-toggle="collapse" href="#replyCommentT{{ c.id }}"

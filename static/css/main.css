@@ -1,6 +1,11 @@
 body{
     background:#F0F8FF;
 }
+
+.container {
+    min-height:400px;
+}
+
 .card {
     margin-bottom: 1.5rem;
     box-shadow: 0 1px 15px 1px rgba(52,40,104,.08);
@@ -138,4 +143,26 @@ img.profile-photo-lg{
     position: relative;
     font-size: 0;
     white-space: nowrap;
+}
+
+.navBarRedSocial .navbar-nav .nav-link > .fa {
+  position: relative;
+  width: 36px;
+  font-size: 24px;
+}
+
+.navBarRedSocial .navbar-nav .nav-link > .fa > .badge {
+  font-size: 0.75rem;
+  position: absolute;
+  right: 0;
+  font-family: sans-serif;
+}
+
+.navBarRedSocial .navbar-nav .nav-link > .fa {
+  top: 3px;
+  line-height: 12px;
+}
+
+.navBarRedSocial .navbar-nav .nav-link > .fa > .badge {
+  top: -10px;
 }
