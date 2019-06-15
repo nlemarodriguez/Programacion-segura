@@ -31,7 +31,9 @@
                             <button type="button" class="btn btn-primary btn-sm mr-2">Aceptar</button>
                             <button type="button" class="btn btn-danger btn-sm">Rechazar</button>
                         {% else %}
-                            <button type="button" class="btn btn-primary btn-sm">Agregar amigo</button>
+                            <form action="/invite/{{ user.id }}" method="post">
+                                <button type="submit" class="btn btn-primary btn-sm">Agregar amigo</button>
+                            </form>
                         {% endif %}
                     {% endif %}
                 </div>
