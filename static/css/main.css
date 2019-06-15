@@ -107,7 +107,7 @@ img.profile-photo-lg{
 
 .imagen_muro {
     object-fit: cover;
-    width: 200px;
+    width: auto;
     height: 200px;
 }
 
