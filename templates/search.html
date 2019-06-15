@@ -20,7 +20,7 @@
     {% endif %}
     {% endwith %}
     <div class="row">
-        <div class="col-md-8 col-centered">
+        <div class="col-md-9 col-centered">
             <div class="people-nearby">
                 {% if friends %}
                     {% for friend in friends %}
@@ -33,16 +33,15 @@
                                 <h5 class="fiend-name">{{ friend.nombresCompletos }}</h5>
                                 <p><b>Fecha Nacimiento:</b> {{ friend.fechaNacimiento }}</p>
                                 <p><b>Sexo:</b> {{ friend.sexo }}</p>
+                                {% if friend.invitacionPendiente %}
+                                    <button type="button" class="btn btn-warning btn-sm" disabled><i class="fas fa-clock"></i> Invitación pendiente</button>
+                                {% endif %}
                             </div>
                             <div class="col-md-3 col-sm-3">
                                 {% if friend.sonAmigos == False and friend.invitacionPendiente == False %}
                                 <form action="/invite/{{ friend.id }}" method="post">
                                     <button class="btn btn-primary pull-right" style="margin-bottom:6px">Agregar <i class="fas fa-user-plus"></i> </button>
                                 </form>
-                                {% else %}
-                                    {% if friend.invitacionPendiente %}
-                                        <p class="text-danger">Invitación Pendiente</p>
-                                    {% endif %}
                                 {% endif %}
                                 <a class="btn btn-success pull-right" href="/profile?user={{ friend.id }}">Ver Perfil <i class="fas fa-user-circle"></i></a>
                             </div>
