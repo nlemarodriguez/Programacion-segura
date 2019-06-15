@@ -44,8 +44,8 @@ class Database:
                          '  (select i.estado from invitacion i where (i.idusuario_invita = %s and i.idusuario_invitado = u.id) or (i.idusuario_invitado = %s and i.idusuario_invita = u.id) order by i.fecha desc limit 1) '
                          '      as estadoInvitacion, '
                                                '  u.foto '                                                                                                                                                                      'from usuario u '
-                                               '  where lower(u.nombres) LIKE %s or '
-                                               '      lower(u.apellidos) LIKE %s '
+                                               '  where (lower(u.nombres) LIKE %s or '
+                                               '      lower(u.apellidos) LIKE %s)'
                          '                              AND u.id != %s '
                          '                              order by u.nombres desc',
                          (idUser, idUser, '%'+friend.lower()+'%', '%'+friend.lower()+'%', idUser))
