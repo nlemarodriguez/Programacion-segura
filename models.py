@@ -29,7 +29,7 @@ class SolicitudAmigo(object):
 
 class Comentario(object):
 
-  def __init__(self, id, texto, fecha, nombres, apellidos, foto, u_postea, pretty_date, imagen):
+  def __init__(self, id, texto, fecha, nombres, apellidos, foto, u_postea, pretty_date, imagen, sub_comentarios):
     self.id = id
     self.texto = texto
     self.fecha = fecha
@@ -39,3 +39,4 @@ class Comentario(object):
     self.foto = foto
     self.pretty_date = pretty_date
     self.imagen = imagen
+    self.sub_comentarios = sub_comentarios

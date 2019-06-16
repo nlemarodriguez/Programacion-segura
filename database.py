@@ -30,8 +30,12 @@ class Database:
         result = self.cur.fetchall()
         comentarios = []
         for row in result:
-            c = Comentario(row['id'], row['texto'], row['fecha'], row['nombres'], row['apellidos'], row['foto'], row['u_postea'], api.pretty_date(row['fecha']), row['imagen'])
+            self.cur.execute(
+                'SELECT c.id, c.texto, c.fecha, u.nombres, u.apellidos, u.foto, u.id u_postea FROM comentario c, usuario u where idcomentario = %s and u.id = c.idusuario_postea order by c.fecha', row['id'])
+            sub_comentarios = self.cur.fetchall()
+            c = Comentario(row['id'], row['texto'], row['fecha'], row['nombres'], row['apellidos'], row['foto'], row['u_postea'], api.pretty_date(row['fecha']), row['imagen'], sub_comentarios)
             comentarios.append(c)
+
         return comentarios
 
     def insert_post(self, texto, idusuario_postea, idusuario_comenta, idImagen):
@@ -109,7 +113,7 @@ class Database:
             s = SolicitudAmigo(row['idInvitacion'], row['idUsuario'], row['nombres'], row['apellidos'], row['sexo'], row['fechaNacimiento'], row['foto'])
             requests.append(s)
         return requests
-        
+
     def friends_list(self, id):
         self.cur.execute(
             'SELECT invitado.id, invitado.nombres, invitado.apellidos, invitado.foto FROM usuario invita, usuario invitado, invitacion i WHERE i.idusuario_invita = invita.id and i.idusuario_invitado = invitado.id and i.estado = ' + str(EstadoInvitacion.ACEPTADO.value) + ' and invita.id = %s union ALL SELECT invita.id, invita.nombres, invita.apellidos, invita.foto FROM usuario invitado, usuario invita, invitacion i WHERE i.idusuario_invitado = invitado.id and i.idusuario_invita = invita.id and i.estado = ' + str(EstadoInvitacion.ACEPTADO.value) + ' and invitado.id = %s', (id, id))
