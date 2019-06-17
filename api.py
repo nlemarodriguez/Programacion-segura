@@ -16,7 +16,7 @@ def pretty_date(time=False):
     day_diff = diff.days
 
     if day_diff < 0:
-        return 'en el futuro :O'
+        return 'Hace unos minutos'
 
     if day_diff == 0:
         if second_diff < 10:
