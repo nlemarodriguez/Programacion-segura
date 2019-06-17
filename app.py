@@ -3,14 +3,18 @@ from flask import Flask, render_template, request, url_for, jsonify, flash, redi
 from flask_bootstrap import Bootstrap
 from database import Database
 import uuid
-from enums import EstadoInvitacion
+from filters import pylibfromcpp
+from filters import pylibfromcpp_mono_color
+import random
+import time
+import shutil
 
 URL_FOLDER = '/static/imagen_perfil/'
 URL_COMMENTS_FOLDER = '/static/imagen_comentarios/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(APP_ROOT, 'static', 'imagen_perfil')
-COMMENTS_UPLOAD_FOLDER = os.path.join(APP_ROOT, 'static', 'imagen_comentarios')
+COMMENTS_UPLOAD_FOLDER = os.path.join(APP_ROOT, 'static', 'imagen_comentarios/original')
 
 def create_app():
     app = Flask(__name__)
@@ -93,9 +97,22 @@ def post_comment(id):
 def save_comment_image(file):
     print(file)
     oldFileName, fileExtension = file.filename.split('.')
-    fileName = str(uuid.uuid4()) + "." + fileExtension #Random IDs
+    ##fileName = str(uuid.uuid4()) + "." + fileExtension #Random IDs
+    fileName = str(random.randint(1000000,9000000)) + "." + fileExtension
     # TODO Antes de guardar implementar filtro a imagen
-    file.save(os.path.join(app.config['COMMENTS_UPLOAD_FOLDER'], fileName))
+    #file.save(os.path.join(app.config['COMMENTS_UPLOAD_FOLDER'], fileName))
+    file2 = open(os.path.join(app.config['COMMENTS_UPLOAD_FOLDER'], fileName), "wb")
+    #file2.write(str(file.stream.read()))
+    shutil.copyfileobj(file, file2)
+    file2.close()
+    if True: #TOdo validar los efectos
+        try:
+            time.sleep(5)
+            print("Ya se creo la imagen")
+            print("Creando imagen con filtros")
+            pylibfromcpp.filter_image(fileName)
+        except:
+            print("Error filtros de imagen")
     imagenComentario = URL_COMMENTS_FOLDER + fileName
     print(imagenComentario)
     efectoImagen = request.form['efectoImagen']
