@@ -7,13 +7,10 @@
 #define RGB_SIZE 24
 #define CHAR_RANGE 256
 #define BYTE_PER_PIXEL 3
+#pragma pack ( push , 1 )
 
 const char *URL_IMAGES = "./static/imagen_comentarios/original/";
 const char *URL_IMAGES_OTP = "./static/imagen_comentarios/";
-
-
-#pragma pack ( push , 1 )
-
 
 typedef struct header
 {
@@ -46,17 +43,19 @@ typedef struct COLOR
    unsigned char   red;
    unsigned char   unused;
 }COLOR_PALLET;
-
 #pragma pack(pop)
 
 
-unsigned char* covert_to_mono ( unsigned char *data_buffer ,int file_size , INFO_HEADER bmp_info_header, COLOR_PALLET *bgr);
+unsigned char* covert_to_mono ( unsigned char *data_buffer , int file_size , INFO_HEADER , COLOR_PALLET *bgr );
+char* get_file_name ();
+int xscanf ();
 void print_header(HEADER bmp_header , INFO_HEADER bmp_info_header );
-//int to_file (unsigned char *out_buffer , HEADER header , INFO_HEADER info_header , COLOR_PALLET *bgr_pallete , int file_size, x, char *fileName);
+//int to_file (unsigned char *out_buffer , HEADER header , INFO_HEADER info_header , COLOR_PALLET *bgr_pallete , int file_size);
 unsigned char rgb24_to_rgb8 (unsigned char , unsigned char , unsigned char, COLOR_PALLET *bgr_pallete);
 
 int filter(file) {
    // printf() displays the string inside quotation
+   printf("Hello, World! - Mono Color\n");
    add_filter(file);
    return 0;
 }
@@ -70,9 +69,9 @@ char* concat(const char *s1, const char *s2)
     return result;
 }
 
-int add_filter (char *baseFileName)
-{
-   printf("Iniciando Filtros de Imagen Mono Color\n");
+int add_filter (char *baseFileName) {
+   printf("File Name >>> %s\n", baseFileName);
+   printf("Iniciando Filtros de Imagen - Mono Color \n");
    int file_size , padding = 0;
    HEADER bmp_header;
    INFO_HEADER bmp_info_header;
@@ -81,21 +80,13 @@ int add_filter (char *baseFileName)
    char *file_name ;
    FILE *in_file = NULL;
 
-   printf("File: : %s\n", baseFileName);
+   printf("Base File name: : %s\n", baseFileName);
    printf("URL Images Constant: %s\n", URL_IMAGES);
-   //char* s = concat(URL_IMAGES, file);
 
-   /*for(int t = 0; t <= strlen(file); t++){
-
-    printf("resultsTag[i] %c\n", file[t]);
-    }*/
-
-   file_name = concat(URL_IMAGES, baseFileName);
-   //strcat(file_name, URL_IMAGES);
-   //file_name = s;//"../static/imagen_comentarios/original/image.bmp"; //get_file_name ();
-   printf("File Name >>> %s\n", file_name);
+    char* s = concat(URL_IMAGES, baseFileName);
+   file_name = s;
    in_file =  fopen ( file_name , "rb" );
-
+   printf("Hola 2---\n");
    if (in_file == NULL)
    {
       printf("file opening failed\n");
@@ -133,7 +124,6 @@ int add_filter (char *baseFileName)
       return 1;
    }
 
-    printf("Cargando...\n");
    file_size = bmp_info_header.image_data_size ;
    //based on file_size allocate memory
    data_buffer = malloc (sizeof (char) * file_size + 1 );
@@ -157,8 +147,7 @@ int add_filter (char *baseFileName)
       printf("File not closing\n" );
    }
 
-   out_buffer = covert_to_mono ( data_buffer , file_size , bmp_info_header, bgr_pallete);
-
+   out_buffer = covert_to_mono ( data_buffer , file_size , bmp_info_header , bgr_pallete);
    if ( ( bmp_info_header.image_width * 3 ) % 4 != 0)
    padding = 4 - ( ( bmp_info_header.image_width * 3 ) % 4 );
 
@@ -169,6 +158,8 @@ int add_filter (char *baseFileName)
    bmp_info_header.image_data_size =( bmp_info_header.image_width * bmp_info_header.image_height ) + ( padding * bmp_info_header.image_height );
 
    print_header( bmp_header , bmp_info_header );
+
+
 
    to_file (out_buffer, bmp_header , bmp_info_header , bgr_pallete , bmp_info_header.image_data_size, baseFileName) ;
 
@@ -226,7 +217,6 @@ unsigned char* covert_to_mono ( unsigned char *data_buffer , int file_size , INF
    }
    return converted_buffer ;
 }
-
 /*
 converts rgb 24 to rgb 8
 */
@@ -271,9 +261,9 @@ void print_header(HEADER bmp_header ,INFO_HEADER bmp_info_header )
 write compressed data to the file
 */
 
-int to_file ( unsigned char *out_buffer , HEADER header , INFO_HEADER info_header , COLOR_PALLET * bgr_pallete , int file_size, char *fileName)
+int to_file (unsigned char *out_buffer , HEADER header , INFO_HEADER info_header , COLOR_PALLET * bgr_pallete , int file_size, char *fileName)
 {
-  printf("Guardando imagen con Filtro\n");
+  printf("Guardando imagen con Filtro - Mono Color\n");
   printf("Otp File Name >>> %s\n", fileName);
   FILE *file ;
   char* file_name = concat(URL_IMAGES_OTP, fileName);
@@ -290,7 +280,7 @@ int to_file ( unsigned char *out_buffer , HEADER header , INFO_HEADER info_heade
     printf("->%ld\n",ftell(file) );
     fwrite ( &info_header , sizeof(INFO_HEADER) , 1 , file );
     printf("->%ld\n",ftell(file) );
-    fwrite ( bgr_pallete , sizeof(COLOR_PALLET) , CHAR_RANGE , file );
+    fwrite ( bgr_pallete , sizeof(COLOR_PALLET) , 256 , file );
     printf("->%ld\n",ftell(file) );
     fwrite ( out_buffer , sizeof(char) , file_size , file );
     printf("->%ld\n",ftell(file) );
@@ -343,18 +333,4 @@ int xscanf ()
     printf("\nEnter a integer \n");
   }
   return temp;
-}
-/*
-genrates the color pallete for the grey scale image
-*/
-
-void get_color_pallet (COLOR_PALLET *bgr_pallete)
-{
-   int i;
-   for ( i = 0; i < CHAR_RANGE; i++) {
-      ( bgr_pallete + i )->blue     = i ;
-      ( bgr_pallete + i )->green    = i ;
-      ( bgr_pallete + i )->red      = i ;
-      ( bgr_pallete + i )->unused   = CHAR_NULL;
-   }
 }

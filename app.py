@@ -105,18 +105,23 @@ def save_comment_image(file):
     #file2.write(str(file.stream.read()))
     shutil.copyfileobj(file, file2)
     file2.close()
+    efectoImagen = request.form['efectoImagen']
+    print(efectoImagen)
     if True: #TOdo validar los efectos
         try:
-            time.sleep(5)
-            print("Ya se creo la imagen")
-            print("Creando imagen con filtros")
-            pylibfromcpp.filter_image(fileName)
+            print(efectoImagen == "1")
+            if str(efectoImagen) == "1":
+                print("Creando imagen Blanco y Negro")
+                pylibfromcpp.filter_image(fileName)
+            else:
+                if str(efectoImagen) == "2":
+                    print("Creando imagen Mono")
+                    pylibfromcpp_mono_color.filter_image(fileName)
         except:
             print("Error filtros de imagen")
     imagenComentario = URL_COMMENTS_FOLDER + fileName
     print(imagenComentario)
-    efectoImagen = request.form['efectoImagen']
-    print(efectoImagen)
+
     idImagen = db.insert_imagen(efectoImagen, imagenComentario)
     return idImagen
 
