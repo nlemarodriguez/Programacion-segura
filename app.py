@@ -4,7 +4,7 @@ from flask_bootstrap import Bootstrap
 from database import Database
 import uuid
 from filters import pylibfromcpp
-from filters import pylibfromcpp_mono_color
+from filters import pylibfromcpp_mono_color, pylibfromcpp_3
 import random
 import time
 import shutil
@@ -122,6 +122,8 @@ def save_comment_image(file):
                     if str(efectoImagen) == "2":
                         print("Creando imagen Mono")
                         pylibfromcpp_mono_color.filter_image(fileName)
+                    else:
+                        pylibfromcpp_3.filter_image(fileName)
         except:
             print("Error filtros de imagen")
     imagenComentario = URL_COMMENTS_FOLDER + fileName
@@ -283,4 +285,4 @@ def editar_pass():
 
 
 if __name__ == '__main__':
-    app.run(port=3000, debug=True)
+    app.run(host="0.0.0.0", port=3000, debug=True)
