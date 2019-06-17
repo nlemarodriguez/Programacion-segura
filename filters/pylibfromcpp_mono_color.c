@@ -4,7 +4,7 @@
 {
     "distutils": {
         "depends": [
-            "filters.hpp"
+            "filters_mono.hpp"
         ],
         "include_dirs": [
             "."
@@ -613,7 +613,7 @@ static CYTHON_INLINE float __PYX_NAN() {
 #define __PYX_HAVE__pylibfromcpp_mono_color
 #define __PYX_HAVE_API__pylibfromcpp_mono_color
 /* Early includes */
-#include "filters.hpp"
+#include "filters_mono.hpp"
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -1073,7 +1073,7 @@ static int __Pyx_check_binary_version(void);
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 
-/* Module declarations from 'filters' */
+/* Module declarations from 'filters_mono' */
 
 /* Module declarations from 'pylibfromcpp_mono_color' */
 static PyObject *__pyx_f_23pylibfromcpp_mono_color_filter_image(PyObject *, int __pyx_skip_dispatch); /*proto*/
@@ -1105,11 +1105,11 @@ static PyObject *__pyx_int_0;
 /* Late includes */
 
 /* "pylibfromcpp_mono_color.pyx":3
- * cimport filters
+ * cimport filters_mono
  * 
  * cpdef filter_image(fileName):             # <<<<<<<<<<<<<<
  *     print(fileName)
- *     filters.filter(fileName.encode('utf-8'))
+ *     filters_mono.filter(fileName.encode('utf-8'))
  */
 
 static PyObject *__pyx_pw_23pylibfromcpp_mono_color_1filter_image(PyObject *__pyx_self, PyObject *__pyx_v_fileName); /*proto*/
@@ -1126,7 +1126,7 @@ static PyObject *__pyx_f_23pylibfromcpp_mono_color_filter_image(PyObject *__pyx_
  * 
  * cpdef filter_image(fileName):
  *     print(fileName)             # <<<<<<<<<<<<<<
- *     filters.filter(fileName.encode('utf-8'))
+ *     filters_mono.filter(fileName.encode('utf-8'))
  *     return 0
  */
   if (__Pyx_PrintOne(0, __pyx_v_fileName) < 0) __PYX_ERR(0, 4, __pyx_L1_error)
@@ -1134,7 +1134,7 @@ static PyObject *__pyx_f_23pylibfromcpp_mono_color_filter_image(PyObject *__pyx_
   /* "pylibfromcpp_mono_color.pyx":5
  * cpdef filter_image(fileName):
  *     print(fileName)
- *     filters.filter(fileName.encode('utf-8'))             # <<<<<<<<<<<<<<
+ *     filters_mono.filter(fileName.encode('utf-8'))             # <<<<<<<<<<<<<<
  *     return 0
  */
   __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_fileName, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5, __pyx_L1_error)
@@ -1160,7 +1160,7 @@ static PyObject *__pyx_f_23pylibfromcpp_mono_color_filter_image(PyObject *__pyx_
 
   /* "pylibfromcpp_mono_color.pyx":6
  *     print(fileName)
- *     filters.filter(fileName.encode('utf-8'))
+ *     filters_mono.filter(fileName.encode('utf-8'))
  *     return 0             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
@@ -1169,11 +1169,11 @@ static PyObject *__pyx_f_23pylibfromcpp_mono_color_filter_image(PyObject *__pyx_
   goto __pyx_L0;
 
   /* "pylibfromcpp_mono_color.pyx":3
- * cimport filters
+ * cimport filters_mono
  * 
  * cpdef filter_image(fileName):             # <<<<<<<<<<<<<<
  *     print(fileName)
- *     filters.filter(fileName.encode('utf-8'))
+ *     filters_mono.filter(fileName.encode('utf-8'))
  */
 
   /* function exit code */
@@ -1564,7 +1564,7 @@ if (!__Pyx_RefNanny) {
   #endif
 
   /* "pylibfromcpp_mono_color.pyx":1
- * cimport filters             # <<<<<<<<<<<<<<
+ * cimport filters_mono             # <<<<<<<<<<<<<<
  * 
  * cpdef filter_image(fileName):
  */

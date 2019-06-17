@@ -15,11 +15,13 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(APP_ROOT, 'static', 'imagen_perfil')
 COMMENTS_UPLOAD_FOLDER = os.path.join(APP_ROOT, 'static', 'imagen_comentarios/original')
+COMMENTS_UPLOAD_MAIN_FOLDER = os.path.join(APP_ROOT, 'static', 'imagen_comentarios')
 
 def create_app():
     app = Flask(__name__)
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     app.config['COMMENTS_UPLOAD_FOLDER'] = COMMENTS_UPLOAD_FOLDER
+    app.config['COMMENTS_UPLOAD_MAIN_FOLDER'] = COMMENTS_UPLOAD_MAIN_FOLDER
     Bootstrap(app)
     return app
 
@@ -99,24 +101,32 @@ def save_comment_image(file):
     oldFileName, fileExtension = file.filename.split('.')
     ##fileName = str(uuid.uuid4()) + "." + fileExtension #Random IDs
     fileName = str(random.randint(1000000,9000000)) + "." + fileExtension
-    # TODO Antes de guardar implementar filtro a imagen
-    #file.save(os.path.join(app.config['COMMENTS_UPLOAD_FOLDER'], fileName))
-    file2 = open(os.path.join(app.config['COMMENTS_UPLOAD_FOLDER'], fileName), "wb")
-    #file2.write(str(file.stream.read()))
-    shutil.copyfileobj(file, file2)
-    file2.close()
+    efectoImagen = request.form['efectoImagen']
+    print(efectoImagen)
+
+    if str(efectoImagen) == "4":
+        file.save(os.path.join(app.config['COMMENTS_UPLOAD_MAIN_FOLDER'], fileName))
+    else:
+        file2 = open(os.path.join(app.config['COMMENTS_UPLOAD_FOLDER'], fileName), "wb")
+        #file2.write(str(file.stream.read()))
+        shutil.copyfileobj(file, file2)
+        file2.close()
     if True: #TOdo validar los efectos
         try:
-            time.sleep(5)
-            print("Ya se creo la imagen")
-            print("Creando imagen con filtros")
-            pylibfromcpp.filter_image(fileName)
+            if str(efectoImagen) != "4": #Sin Filtro = 4
+                print(efectoImagen == "1")
+                if str(efectoImagen) == "1":
+                    print("Creando imagen Blanco y Negro")
+                    pylibfromcpp.filter_image(fileName)
+                else:
+                    if str(efectoImagen) == "2":
+                        print("Creando imagen Mono")
+                        pylibfromcpp_mono_color.filter_image(fileName)
         except:
             print("Error filtros de imagen")
     imagenComentario = URL_COMMENTS_FOLDER + fileName
     print(imagenComentario)
-    efectoImagen = request.form['efectoImagen']
-    print(efectoImagen)
+
     idImagen = db.insert_imagen(efectoImagen, imagenComentario)
     return idImagen
 
