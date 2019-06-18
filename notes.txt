@@ -3,7 +3,7 @@ pip3 install pymysql
 pip3 install flask-bootstrap
 pip3 install cython
 
-Instalar visual studio 2017 con el worload de python y el componente individual python native development tools
+Instalar visual studio 2017 con el workload de python y el componente individual python native development tools
 cd filters
 python3 setup.py build_ext -i
 python3 setup.py install
